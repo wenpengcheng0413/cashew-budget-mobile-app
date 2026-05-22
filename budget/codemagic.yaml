@@ -20,8 +20,11 @@ workflows:
         - pattern: ios-v*
           include: true
     scripts:
-      - name: Clean workspace (clear stale CocoaPods cache)
-        script: flutter clean
+      - name: Clean workspace and stale CocoaPods lock
+        script: |
+          flutter clean
+          rm -f ios/Podfile.lock
+          rm -rf ios/Pods
       - name: Install Flutter dependencies
         script: flutter pub get
       - name: Run build_runner for drift database
