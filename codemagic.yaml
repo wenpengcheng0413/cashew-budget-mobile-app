@@ -14,29 +14,23 @@ workflows:
       branch_patterns:
         - pattern: main
           include: true
+        - pattern: stable/flutter-latest
+          include: true
       tag_patterns:
         - pattern: ios-v*
           include: true
     scripts:
-      - name: Clean workspace and stale CocoaPods lock
-        script: |
-          flutter clean
-          rm -f ios/Podfile.lock
-          rm -rf ios/Pods
+      - name: Clean workspace
+        script: flutter clean && rm -f ios/Podfile.lock && rm -rf ios/Pods
       - name: Install Flutter dependencies
         script: flutter pub get
       - name: Run build_runner for drift database
         script: dart run build_runner build --delete-conflicting-outputs
       - name: Update CocoaPods specs repo
         script: pod repo update
-      - name: Build iOS Archive
-        script: flutter build ipa --release --no-codesign
-      - name: Package unsigned IPA from archive
-        script: |
-          mkdir -p Payload
-          cp -r build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app Payload/
-          zip -qr build/ios/ipa/Runner.ipa Payload
-          rm -rf Payload
+      - name: Build iOS app (unsigned)
+        script: flutter build ios --release --no-codesign
+      - name: Package unsigned IPA
+        script: mkdir -p build/ios/ipa && cp -r build/ios/iphoneos/Runner.app Payload && zip -qr build/ios/ipa/Runner.ipa Payload && rm -rf Payload
     artifacts:
       - budget/build/ios/ipa/Runner.ipa
-      - budget/build/ios/archive/Runner.xcarchive
