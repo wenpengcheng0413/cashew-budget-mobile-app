@@ -7,9 +7,6 @@ workflows:
     environment:
       flutter: stable
       xcode: latest
-      ios_signing:
-        distribution_type: development
-        bundle_identifier: com.budget.tracker-app
     triggering:
       events:
         - push
@@ -32,10 +29,8 @@ workflows:
         script: dart run build_runner build --delete-conflicting-outputs
       - name: Update CocoaPods specs repo
         script: pod repo update
-      - name: Set up iOS code signing
-        script: xcode-project use-profiles
-      - name: Build iOS IPA
-        script: flutter build ipa --release
+      - name: Build iOS IPA (unsigned - Sideloadly signs on install)
+        script: flutter build ipa --release --no-codesign
     artifacts:
       - build/ios/ipa/*.ipa
       - build/ios/xcarchive/*.xcarchive
