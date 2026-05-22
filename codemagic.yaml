@@ -32,5 +32,5 @@ workflows:
       - name: Build iOS IPA (unsigned - Sideloadly signs on install)
         script: flutter build ipa --release --no-codesign
     artifacts:
-      - build/ios/ipa/*.ipa
-      - build/ios/xcarchive/*.xcarchive
+      - budget/build/ios/ipa/*.ipa
+      - budget/build/ios/xcarchive/*.xcarchive
