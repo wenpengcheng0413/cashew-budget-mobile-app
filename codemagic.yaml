@@ -29,8 +29,14 @@ workflows:
         script: dart run build_runner build --delete-conflicting-outputs
       - name: Update CocoaPods specs repo
         script: pod repo update
-      - name: Build iOS IPA (unsigned - Sideloadly signs on install)
+      - name: Build iOS Archive
         script: flutter build ipa --release --no-codesign
+      - name: Package unsigned IPA from archive
+        script: |
+          mkdir -p Payload
+          cp -r build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app Payload/
+          zip -qr build/ios/ipa/Runner.ipa Payload
+          rm -rf Payload
     artifacts:
-      - budget/build/ios/ipa/*.ipa
-      - budget/build/ios/xcarchive/*.xcarchive
+      - budget/build/ios/ipa/Runner.ipa
+      - budget/build/ios/archive/Runner.xcarchive
