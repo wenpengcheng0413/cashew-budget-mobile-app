@@ -30,10 +30,7 @@ workflows:
         script: pod repo update
       - name: Build iOS app (unsigned)
         script: flutter build ios --release --no-codesign
-      - name: Package IPA and prepare .app
-        script: |
-          ditto -c -k --sequesterRsrc --keepParent build/ios/iphoneos/Runner.app build/ios/ipa/Runner.ipa
-          cp -r build/ios/iphoneos/Runner.app build/ios/ipa/
+      - name: Package unsigned IPA
+        script: mkdir -p Payload && cp -r build/ios/iphoneos/Runner.app Payload/ && ditto -c -k Payload build/ios/ipa/Runner.ipa && rm -rf Payload
     artifacts:
       - build/ios/ipa/Runner.ipa
-      - build/ios/ipa/Runner.app
