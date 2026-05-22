@@ -12,6 +12,7 @@ pubspec_overrides.yaml
 .flutter-plugins-dependencies
 .metadata
 **/Pods/
+**/Podfile.lock
 
 # Firebase secrets
 **/GoogleService-Info.plist

@@ -24,6 +24,8 @@ workflows:
         script: flutter pub get
       - name: Run build_runner for drift database
         script: dart run build_runner build --delete-conflicting-outputs
+      - name: Update CocoaPods specs repo
+        script: pod repo update
       - name: Set up iOS code signing
         script: xcode-project use-profiles
       - name: Build iOS IPA
