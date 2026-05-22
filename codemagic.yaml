@@ -33,4 +33,4 @@ workflows:
       - name: Package unsigned IPA
         script: mkdir -p build/ios/ipa && cp -r build/ios/iphoneos/Runner.app Payload && zip -qr build/ios/ipa/Runner.ipa Payload && rm -rf Payload
     artifacts:
-      - budget/build/ios/ipa/Runner.ipa
+      - build/ios/ipa/Runner.ipa
