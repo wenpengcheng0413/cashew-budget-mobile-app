@@ -7,7 +7,7 @@ build/
 .packages
 *.iml
 .idea/
-*.lock
+pubspec_overrides.yaml
 .flutter-plugins
 .flutter-plugins-dependencies
 .metadata
@@ -18,6 +18,9 @@ build/
 **/google-services.json
 **/GoogleService-Info*.plist
 
+# Claude Code local settings
+.claude/
+
 # Temp debug files
 **/analyze_output.txt
 **/analyze_machine.txt
@@ -25,8 +28,6 @@ build/
 **/deprecations_lib.txt
 **/final_deps.txt
 **/r_deps.txt
-**/pubspec_overrides.yaml
-
 # OS
 .DS_Store
 Thumbs.db
