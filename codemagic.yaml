@@ -3,6 +3,7 @@ workflows:
     name: iOS Sideload IPA Build
     instance_type: mac_mini_m1
     max_build_duration: 60
+    working_directory: budget
     environment:
       flutter: stable
       xcode: latest
