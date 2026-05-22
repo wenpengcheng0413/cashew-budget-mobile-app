@@ -446,7 +446,7 @@ class ObjectiveContainer extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsetsDirectional.only(
                     top: 18,
-                    bottom: 23,
+                    bottom: 21,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
