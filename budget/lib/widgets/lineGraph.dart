@@ -113,13 +113,13 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
                     strokeWidth: 2,
                     y: 0,
                     color: dynamicPastel(context, widget.color, amount: 0.3)
-                        .withOpacity(0.4),
+                        .withValues(alpha: 0.4),
                   ),
                 ]),
           HorizontalLine(
             y: 0,
             color: dynamicPastel(context, widget.color, amount: 0.3)
-                .withOpacity(0.4),
+                .withValues(alpha: 0.4),
           ),
           ...(widget.horizontalLineAt == null
               ? []
@@ -127,7 +127,7 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
                   HorizontalLine(
                     y: widget.horizontalLineAt!,
                     color: dynamicPastel(context, widget.color, amount: 0.3)
-                        .withOpacity(0.7),
+                        .withValues(alpha: 0.7),
                     dashArray: [2, 2],
                   ),
                 ])
@@ -138,7 +138,7 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
             dashArray: [2, 5],
             strokeWidth: 2,
             color: dynamicPastel(context, widget.color, amount: 0.3)
-                .withOpacity(0.2),
+                .withValues(alpha: 0.2),
           ),
           ...(widget.verticalLineAt != null
               ? [
@@ -147,7 +147,7 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
                     dashArray: [2, 2],
                     strokeWidth: 2,
                     color: dynamicPastel(context, widget.color, amount: 0.3)
-                        .withOpacity(0.7),
+                        .withValues(alpha: 0.7),
                   )
                 ]
               : [])
@@ -195,7 +195,7 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
                     text: text,
                     textColor: dynamicPastel(context, widget.color,
                             amount: 0.8, inverse: true)
-                        .withOpacity(0.5),
+                        .withValues(alpha: 0.5),
                   ),
                 ),
               );
@@ -244,7 +244,7 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
                         Provider.of<AllWallets>(context, listen: false), value),
                     textColor: dynamicPastel(context, widget.color,
                             amount: 0.5, inverse: true)
-                        .withOpacity(0.3),
+                        .withValues(alpha: 0.3),
                     fontSize: 13,
                   ),
                 ),
@@ -317,7 +317,7 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
               FlLine(
                 color: transparent
                     ? Colors.transparent
-                    : widget.color.withOpacity(0.9),
+                    : widget.color.withValues(alpha: 0.9),
                 strokeWidth: 2,
                 dashArray: [2, 2],
               ),
@@ -328,11 +328,11 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
                   radius: 3,
                   color: transparent
                       ? Colors.transparent
-                      : widget.color.withOpacity(0.9),
+                      : widget.color.withValues(alpha: 0.9),
                   strokeWidth: 2,
                   strokeColor: transparent
                       ? Colors.transparent
-                      : widget.color.withOpacity(0.9),
+                      : widget.color.withValues(alpha: 0.9),
                 ),
               ),
             );
@@ -358,7 +358,7 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
           touchedValue = value.toInt();
         },
         touchTooltipData: LineTouchTooltipData(
-          getTooltipColor: (_) => widget.color.withOpacity(0.7),
+          getTooltipColor: (_) => widget.color.withValues(alpha: 0.7),
           tooltipRoundedRadius: 8,
           fitInsideVertically: true,
           fitInsideHorizontally: true,
@@ -425,7 +425,7 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
           //     ((widget.maxPair.y).abs() + (widget.minPair.y).abs()));
           return FlLine(
             color: dynamicPastel(context, widget.color, amount: 0.3)
-                .withOpacity(0.2),
+                .withValues(alpha: 0.2),
             // color: Colors.transparent,
             strokeWidth: 2,
             dashArray: [2, 8],
@@ -442,7 +442,7 @@ class _LineChartState extends State<_LineChart> with WidgetsBindingObserver {
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: dynamicPastel(context, widget.color, amount: 0.3)
-                .withOpacity(0.2),
+                .withValues(alpha: 0.2),
             strokeWidth: 2,
             dashArray: [2, 8],
           );

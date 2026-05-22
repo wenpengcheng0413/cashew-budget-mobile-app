@@ -460,7 +460,7 @@ class _ObjectivePageContentState extends State<_ObjectivePageContent> {
                                                           textColor: getColor(
                                                                   context,
                                                                   "black")
-                                                              .withOpacity(0.4),
+                                                              .withValues(alpha: 0.4),
                                                         ),
                                                       ),
                                                     ],

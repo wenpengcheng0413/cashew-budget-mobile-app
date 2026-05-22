@@ -211,7 +211,7 @@ class ObjectiveList extends StatelessWidget {
                       padding: const EdgeInsetsDirectional.only(bottom: 8.0),
                       child: TextFont(
                         text: "example-goals".tr(),
-                        textColor: getColor(context, "black").withOpacity(0.25),
+                        textColor: getColor(context, "black").withValues(alpha: 0.25),
                         fontSize: 16,
                         textAlign: TextAlign.center,
                       ),
@@ -397,7 +397,7 @@ class ObjectiveContainer extends StatelessWidget {
             : 20;
     Color containerColor =
         getPlatform() == PlatformOS.isIOS && forceAndroidBubbleDesign == false
-            ? Theme.of(context).colorScheme.background
+            ? Theme.of(context).colorScheme.surface
             : getColor(context, "lightDarkAccentHeavyLight");
     EdgeInsetsDirectional containerPadding = EdgeInsetsDirectional.only(
       start:
@@ -500,7 +500,7 @@ class ObjectiveContainer extends StatelessWidget {
                                                   fontSize: 15,
                                                   textColor:
                                                       getColor(context, "black")
-                                                          .withOpacity(0.65),
+                                                          .withValues(alpha: 0.65),
                                                   maxLines: 1,
                                                 );
                                               }),
@@ -579,7 +579,7 @@ class ObjectiveContainer extends StatelessWidget {
                                             fontSize: 15,
                                             textColor:
                                                 getColor(context, "black")
-                                                    .withOpacity(0.65),
+                                                    .withValues(alpha: 0.65),
                                           ),
                                         );
                                       },
@@ -629,7 +629,7 @@ class ObjectiveContainer extends StatelessWidget {
                                         ),
                                         fontSize: 15,
                                         textColor: getColor(context, "black")
-                                            .withOpacity(0.3),
+                                            .withValues(alpha: 0.3),
                                       ),
                                     ),
                                   ],
@@ -661,7 +661,7 @@ class ObjectiveContainer extends StatelessWidget {
                                   ),
                                   fontSize: 12,
                                   textColor: getColor(context, "black")
-                                      .withOpacity(0.3),
+                                      .withValues(alpha: 0.3),
                                 ),
                               ),
                             Expanded(
@@ -702,7 +702,7 @@ class ObjectiveContainer extends StatelessWidget {
                                   ),
                                   fontSize: 12,
                                   textColor: getColor(context, "black")
-                                      .withOpacity(0.3),
+                                      .withValues(alpha: 0.3),
                                 ),
                               ),
                           ],
@@ -764,7 +764,7 @@ class ObjectiveContainerDifferenceLoan extends StatelessWidget {
         : 20;
     Color containerColor =
         getPlatform() == PlatformOS.isIOS && forceAndroidBubbleDesign == false
-            ? Theme.of(context).colorScheme.background
+            ? Theme.of(context).colorScheme.surface
             : getColor(context, "lightDarkAccentHeavyLight");
     Widget child = WatchTotalAndAmountOfObjective(
       objective: objective,
@@ -868,7 +868,7 @@ class ObjectiveContainerDifferenceLoan extends StatelessWidget {
                                                     .toLowerCase()),
                                         fontSize: 14,
                                         textColor: getColor(context, "black")
-                                            .withOpacity(0.65),
+                                            .withValues(alpha: 0.65),
                                       );
                                     },
                                   ),
@@ -919,7 +919,7 @@ class ObjectiveContainerDifferenceLoan extends StatelessWidget {
                                       .capitalizeFirst,
                               fontSize: 14,
                               textColor:
-                                  getColor(context, "black").withOpacity(0.65),
+                                  getColor(context, "black").withValues(alpha: 0.65),
                             ),
                           ),
                         ],

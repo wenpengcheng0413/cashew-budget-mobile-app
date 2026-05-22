@@ -133,7 +133,7 @@ Color getTransactionAmountColor(BuildContext context, Transaction transaction) {
                           : getColor(context, "textLight");
   if (transaction.paid == true && transaction.categoryFk == "0") {
     if (appStateSettings["balanceTransferAmountColor"] == "no-color") {
-      return getColor(context, "black").withOpacity(0.95);
+      return getColor(context, "black").withValues(alpha: 0.95);
     } else {
       return dynamicPastel(context, color,
           inverse: true, amountLight: 0.3, amountDark: 0.25);

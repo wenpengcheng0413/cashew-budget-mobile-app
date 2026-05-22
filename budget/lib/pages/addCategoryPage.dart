@@ -304,7 +304,7 @@ class _AddCategoryPageState extends State<AddCategoryPage>
               color: Theme.of(context)
                   .colorScheme
                   .secondaryContainer
-                  .withOpacity(0.7),
+                  .withValues(alpha: 0.7),
               borderRadius: BorderRadiusDirectional.all(
                   Radius.circular(getPlatform() == PlatformOS.isIOS ? 10 : 15)),
             ),
@@ -334,7 +334,7 @@ class _AddCategoryPageState extends State<AddCategoryPage>
                     containerColor: Theme.of(context)
                         .colorScheme
                         .secondaryContainer
-                        .withOpacity(0.7),
+                        .withValues(alpha: 0.7),
                     openPage: Container(),
                     transaction: Transaction(
                       transactionPk: "-1",
@@ -842,7 +842,7 @@ class _AddCategoryPageState extends State<AddCategoryPage>
                                                       .toLowerCase()),
                                           fontSize: 14,
                                           textColor: getColor(context, "black")
-                                              .withOpacity(0.65),
+                                              .withValues(alpha: 0.65),
                                         );
                                       } else {
                                         return TextFont(
@@ -850,7 +850,7 @@ class _AddCategoryPageState extends State<AddCategoryPage>
                                           text: "/ transactions",
                                           fontSize: 14,
                                           textColor: getColor(context, "black")
-                                              .withOpacity(0.65),
+                                              .withValues(alpha: 0.65),
                                         );
                                       }
                                     },
@@ -1518,7 +1518,7 @@ class FakeCategoryEntryPlaceholder extends StatelessWidget {
         ),
         child: Tappable(
           color:
-              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
+              Theme.of(context).colorScheme.secondaryContainer.withValues(alpha: 0.7),
           borderRadius: 10,
           onTap: () {},
           child: Padding(

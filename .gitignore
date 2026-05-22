@@ -1,2 +1,32 @@
 # Miscellaneous
 /.vscode/
+
+# Flutter/Dart
+build/
+.dart_tool/
+.packages
+*.iml
+.idea/
+*.lock
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+**/Pods/
+
+# Firebase secrets
+**/GoogleService-Info.plist
+**/google-services.json
+**/GoogleService-Info*.plist
+
+# Temp debug files
+**/analyze_output.txt
+**/analyze_machine.txt
+**/deprecations.txt
+**/deprecations_lib.txt
+**/final_deps.txt
+**/r_deps.txt
+**/pubspec_overrides.yaml
+
+# OS
+.DS_Store
+Thumbs.db

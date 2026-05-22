@@ -57,8 +57,8 @@ class TextFont extends StatelessWidget {
     if (appStateSettings["increaseTextContrast"] == true) {
       double threshold =
           Theme.of(context).brightness == Brightness.light ? 0.7 : 0.65;
-      if (finalTextColor.alpha.toDouble() < (255 * threshold)) {
-        finalTextColor = finalTextColor.withOpacity(1 * threshold);
+      if (finalTextColor.a < threshold) {
+        finalTextColor = finalTextColor.withValues(alpha: 1 * threshold);
       }
     }
 
@@ -116,8 +116,7 @@ class TextFont extends StatelessWidget {
                         text: textPassed,
                         children: richTextSpan,
                       ),
-                      textScaler: TextScaler.linear(
-                          MediaQuery.of(context).textScaleFactor),
+                      textScaler: MediaQuery.textScalerOf(context),
                     )
                   : autoSizeText
                       ? AutoSizeText(

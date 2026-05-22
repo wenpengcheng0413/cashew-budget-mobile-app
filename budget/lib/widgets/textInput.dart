@@ -264,7 +264,7 @@ class TextInput extends StatelessWidget {
                               ? Theme.of(context)
                                   .colorScheme
                                   .primary
-                                  .withOpacity(0.2)
+                                  .withValues(alpha: 0.2)
                               : getColor(context, "lightDarkAccentHeavy"),
                           width: 2,
                         ),

@@ -156,32 +156,32 @@ class _ColorPickerState extends State<ColorPicker> {
     double ratio = position / widget.width;
     if (ratio > 0.5) {
       //Calculate new color (values converge to 255 to make the color lighter)
-      int redVal = _currentColor.red != 255
-          ? (_currentColor.red +
-                  (255 - _currentColor.red) * (ratio - 0.5) / 0.5)
+      int redVal = (_currentColor.r * 255.0).round().clamp(0, 255) != 255
+          ? ((_currentColor.r * 255.0).round().clamp(0, 255) +
+                  (255 - (_currentColor.r * 255.0).round().clamp(0, 255)) * (ratio - 0.5) / 0.5)
               .round()
           : 255;
-      int greenVal = _currentColor.green != 255
-          ? (_currentColor.green +
-                  (255 - _currentColor.green) * (ratio - 0.5) / 0.5)
+      int greenVal = (_currentColor.g * 255.0).round().clamp(0, 255) != 255
+          ? ((_currentColor.g * 255.0).round().clamp(0, 255) +
+                  (255 - (_currentColor.g * 255.0).round().clamp(0, 255)) * (ratio - 0.5) / 0.5)
               .round()
           : 255;
-      int blueVal = _currentColor.blue != 255
-          ? (_currentColor.blue +
-                  (255 - _currentColor.blue) * (ratio - 0.5) / 0.5)
+      int blueVal = (_currentColor.b * 255.0).round().clamp(0, 255) != 255
+          ? ((_currentColor.b * 255.0).round().clamp(0, 255) +
+                  (255 - (_currentColor.b * 255.0).round().clamp(0, 255)) * (ratio - 0.5) / 0.5)
               .round()
           : 255;
       return Color.fromARGB(255, redVal, greenVal, blueVal);
     } else if (ratio < 0.5) {
       //Calculate new color (values converge to 0 to make the color darker)
-      int redVal = _currentColor.red != 0
-          ? (_currentColor.red * ratio / 0.5).round()
+      int redVal = (_currentColor.r * 255.0).round().clamp(0, 255) != 0
+          ? ((_currentColor.r * 255.0).round().clamp(0, 255) * ratio / 0.5).round()
           : 0;
-      int greenVal = _currentColor.green != 0
-          ? (_currentColor.green * ratio / 0.5).round()
+      int greenVal = (_currentColor.g * 255.0).round().clamp(0, 255) != 0
+          ? ((_currentColor.g * 255.0).round().clamp(0, 255) * ratio / 0.5).round()
           : 0;
-      int blueVal = _currentColor.blue != 0
-          ? (_currentColor.blue * ratio / 0.5).round()
+      int blueVal = (_currentColor.b * 255.0).round().clamp(0, 255) != 0
+          ? ((_currentColor.b * 255.0).round().clamp(0, 255) * ratio / 0.5).round()
           : 0;
       return Color.fromARGB(255, redVal, greenVal, blueVal);
     } else {
@@ -466,7 +466,7 @@ class _RingColorPickerState extends State<RingColorPicker> {
 
   void onColorChanging(HSVColor color) {
     setState(() => currentHsvColor = color);
-    widget.onColorChanged(currentHsvColor.toColor().withOpacity(1));
+    widget.onColorChanged(currentHsvColor.toColor().withValues(alpha: 1));
   }
 
   @override
@@ -478,7 +478,7 @@ class _RingColorPickerState extends State<RingColorPicker> {
             ? Align(
                 alignment: Alignment.topRight,
                 child: widget
-                    .previewBuilder!(currentHsvColor.toColor().withOpacity(1)),
+                    .previewBuilder!(currentHsvColor.toColor().withValues(alpha: 1)),
               )
             : Align(
                 alignment: Alignment.topRight,
@@ -492,7 +492,7 @@ class _RingColorPickerState extends State<RingColorPicker> {
                   child: Tappable(
                     onTap: widget.onSelect,
                     borderRadius: 100,
-                    color: currentHsvColor.toColor().withOpacity(1),
+                    color: currentHsvColor.toColor().withValues(alpha: 1),
                     child: SizedBox(),
                   ),
                 ),

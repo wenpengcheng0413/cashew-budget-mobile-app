@@ -40,7 +40,7 @@ class Tappable extends StatelessWidget {
         child: child,
         onTap: onTap,
         borderRadius: customBorderRadius ?? BorderRadius.circular(borderRadius),
-        color: color ?? Theme.of(context).colorScheme.background,
+        color: color ?? Theme.of(context).colorScheme.surface,
         onLongPress: onLongPress != null
             ? () {
                 if (getPlatform() == PlatformOS.isIOS)
@@ -53,7 +53,7 @@ class Tappable extends StatelessWidget {
     }
 
     Widget tappable = Material(
-      color: color ?? Theme.of(context).colorScheme.background,
+      color: color ?? Theme.of(context).colorScheme.surface,
       type: type,
       borderRadius:
           customBorderRadius ?? BorderRadiusDirectional.circular(borderRadius),

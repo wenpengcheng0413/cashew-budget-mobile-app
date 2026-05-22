@@ -135,8 +135,8 @@ class ActionButton extends StatelessWidget {
                   ? Theme.of(context)
                       .colorScheme
                       .secondaryContainer
-                      .withOpacity(0.6)
-                  : iconColor.withOpacity(0.7),
+                      .withValues(alpha: 0.6)
+                  : iconColor.withValues(alpha: 0.7),
               onTap: onTap,
               borderRadius: 100,
               child: Padding(
@@ -145,9 +145,9 @@ class ActionButton extends StatelessWidget {
                   iconData,
                   color: dealtWith
                       ? (containerColor == null
-                          ? Theme.of(context).colorScheme.background
+                          ? Theme.of(context).colorScheme.surface
                           : containerColor)
-                      : iconColor.withOpacity(0.8),
+                      : iconColor.withValues(alpha: 0.8),
                   size: 23,
                 ),
               ),
@@ -183,7 +183,7 @@ class TransactionEntryTypeButton extends StatelessWidget {
                               ? Theme.of(context)
                                   .colorScheme
                                   .primary
-                                  .withOpacity(0.1)
+                                  .withValues(alpha: 0.1)
                               : getColor(context, "lightDarkAccent"),
                           borderRadius:
                               BorderRadiusDirectional.all(Radius.circular(10))),

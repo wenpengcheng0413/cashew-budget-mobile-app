@@ -418,7 +418,7 @@ class TransactionEntry extends StatelessWidget {
               text: transaction.note.replaceAll("\n", ", "),
               fontSize: fontSize - 4,
               maxLines: 2,
-              textColor: getColor(context, "textLight").withOpacity(0.7),
+              textColor: getColor(context, "textLight").withValues(alpha: 0.7),
             ),
           ),
         ],
@@ -626,9 +626,9 @@ class TransactionEntry extends StatelessWidget {
                           ? Theme.of(context)
                               .colorScheme
                               .secondaryContainer
-                              .withOpacity(0.8)
-                          : categoryTintColor!.withOpacity(0.2)
-                      : getColor(context, "black").withOpacity(0.1);
+                              .withValues(alpha: 0.8)
+                          : categoryTintColor!.withValues(alpha: 0.2)
+                      : getColor(context, "black").withValues(alpha: 0.1);
                   bool checkVisibilityForAnimation =
                       recentlyAddedTransactionInfo.value.transactionPk ==
                               transaction.transactionPk &&
@@ -656,14 +656,14 @@ class TransactionEntry extends StatelessWidget {
                         ),
                       ),
                       closedColor: containerColor == null
-                          ? Theme.of(context).colorScheme.background
+                          ? Theme.of(context).colorScheme.surface
                           : containerColor,
                       button: (openContainer) {
                         return FlashingContainer(
                           loopCount: loopCount,
                           isAnimating: triggerAnimation,
                           flashDuration: Duration(milliseconds: 500),
-                          backgroundColor: selectedColor.withOpacity(
+                          backgroundColor: selectedColor.withValues(alpha: 
                             appStateSettings["materialYou"]
                                 ? categoryTintColor == null
                                     ? 0.4
@@ -962,7 +962,7 @@ class TransactionSelectionCheck extends StatelessWidget {
                                     : Theme.of(context)
                                         .colorScheme
                                         .primary
-                                        .withOpacity(0.8),
+                                        .withValues(alpha: 0.8),
                                 width: 2,
                               ),
                             ),

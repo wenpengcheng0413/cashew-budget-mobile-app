@@ -21,6 +21,8 @@ import 'package:budget/widgets/dropdownSelect.dart';
 import 'package:budget/widgets/exportDB.dart';
 import 'package:budget/widgets/importCSV.dart';
 import 'package:budget/widgets/exportCSV.dart';
+import 'package:budget/widgets/importExcel.dart';
+import 'package:budget/widgets/exportExcel.dart';
 import 'package:budget/pages/autoTransactionsPageEmail.dart';
 import 'package:budget/pages/activityPage.dart';
 import 'package:budget/pages/editAssociatedTitlesPage.dart';
@@ -610,7 +612,11 @@ class SettingsPageContent extends StatelessWidget {
 
         ExportCSV(),
 
+        ExportExcel(),
+
         ImportCSV(),
+
+        ImportExcel(),
 
         SettingsHeader(title: "backups".tr()),
 
@@ -1059,8 +1065,8 @@ class IncreaseTextContrastSetting extends StatelessWidget {
           ? Icons.exposure_outlined
           : Icons.exposure_rounded,
       descriptionColor: appStateSettings["increaseTextContrast"]
-          ? getColor(context, "black").withOpacity(0.84)
-          : Theme.of(context).colorScheme.secondary.withOpacity(0.45),
+          ? getColor(context, "black").withValues(alpha: 0.84)
+          : Theme.of(context).colorScheme.secondary.withValues(alpha: 0.45),
     );
   }
 }

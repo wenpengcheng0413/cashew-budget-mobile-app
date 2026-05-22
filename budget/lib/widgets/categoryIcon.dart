@@ -145,7 +145,7 @@ class CategoryIcon extends StatelessWidget {
                                     Theme.of(context)
                                         .colorScheme
                                         .primary
-                                        .withOpacity(0.7),
+                                        .withValues(alpha: 0.7),
                                 BlendMode.srcATop,
                               ),
                               child: ColorFiltered(
@@ -287,7 +287,7 @@ class EmojiIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQueryData(textScaleFactor: 1),
+      data: MediaQueryData(textScaler: TextScaler.linear(1)),
       child: IgnorePointer(
         child: Padding(
           padding: EdgeInsetsDirectional.only(

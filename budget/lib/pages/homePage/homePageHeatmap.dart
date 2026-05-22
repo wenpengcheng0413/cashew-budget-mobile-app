@@ -268,9 +268,9 @@ class HeatMap extends StatelessWidget {
                                                 ? Theme.of(context)
                                                             .brightness ==
                                                         Brightness.light
-                                                    ? color.withOpacity(0.05)
-                                                    : color.withOpacity(0.2)
-                                                : color.withOpacity(0.3),
+                                                    ? color.withValues(alpha: 0.05)
+                                                    : color.withValues(alpha: 0.2)
+                                                : color.withValues(alpha: 0.3),
                                             width: 1,
                                           ),
                                           borderRadius:
@@ -337,17 +337,17 @@ Color getHeatMapColor({
   } else if (amount == 0) {
     return defaultColor ??
         (appStateSettings["materialYou"]
-            ? Theme.of(context).colorScheme.onSecondary.withOpacity(0.6)
-            : getColor(context, "lightDarkAccent").withOpacity(0.6));
+            ? Theme.of(context).colorScheme.onSecondary.withValues(alpha: 0.6)
+            : getColor(context, "lightDarkAccent").withValues(alpha: 0.6));
   } else if (amount < 0) {
-    return getColor(context, "expenseAmount").withOpacity(
+    return getColor(context, "expenseAmount").withValues(alpha: 
       (minimumOpacityThreshold +
           (((1 - subtractedOpacityThreshold) / 4) *
                   (getRangeIndex(maxExpense, minExpense, amount) + 1))
               .clamp(0, 1)),
     );
   } else {
-    return getColor(context, "incomeAmount").withOpacity(
+    return getColor(context, "incomeAmount").withValues(alpha: 
       (minimumOpacityThreshold +
           (((1 - subtractedOpacityThreshold) / 4) *
                   (getRangeIndex(minIncome, maxIncome, amount) + 1))
@@ -433,7 +433,7 @@ class HeatMapMonthLabel extends StatelessWidget {
         text: label,
         textColor: dynamicPastel(context, Theme.of(context).colorScheme.primary,
                 amount: 0.8, inverse: true)
-            .withOpacity(0.5),
+            .withValues(alpha: 0.5),
       ),
     );
   }

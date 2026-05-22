@@ -460,7 +460,7 @@ class _SelectAmountState extends State<SelectAmount> {
     double result = 0;
     try {
       ContextModel cm = ContextModel();
-      Parser p = new Parser();
+      GrammarParser p = GrammarParser();
       Expression exp = p.parse(changedInput);
       result = exp.evaluate(EvaluationType.REAL, cm);
     } catch (e) {

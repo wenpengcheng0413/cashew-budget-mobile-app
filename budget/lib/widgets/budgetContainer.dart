@@ -92,7 +92,7 @@ class BudgetContainer extends StatelessWidget {
                           color: HexColor(budget.colour,
                                   defaultColor:
                                       Theme.of(context).colorScheme.primary)
-                              .withOpacity(0.8),
+                              .withValues(alpha: 0.8),
                         ),
                       ),
                       Padding(
@@ -546,8 +546,8 @@ class AnimatedGooBackground extends StatelessWidget {
           type: PlasmaType.infinity,
           particles: 10,
           color: Theme.of(context).brightness == Brightness.light
-              ? this.color.withOpacity(0.1)
-              : this.color.withOpacity(0.3),
+              ? this.color.withValues(alpha: 0.1)
+              : this.color.withValues(alpha: 0.3),
           blur: 0.3,
           size: 1.3,
           speed: 3.3,
@@ -915,7 +915,7 @@ class _AnimatedProgressState extends State<AnimatedProgress> {
                       borderRadius: BorderRadiusDirectional.circular(20),
                       color: dynamicPastel(context, widget.color,
                               amountDark: 0.1, amountLight: 0.3)
-                          .withOpacity(0.8),
+                          .withValues(alpha: 0.8),
                     ),
                   ),
                 ),
@@ -1053,7 +1053,7 @@ class _TodayIndicatorState extends State<TodayIndicator> {
                               textColor: getColor(context, "white"),
                             ),
                             data: MediaQuery.of(context)
-                                .copyWith(textScaleFactor: 1.0),
+                                .copyWith(textScaler: TextScaler.linear(1.0)),
                           ),
                         ),
                       ),
@@ -1070,7 +1070,7 @@ class _TodayIndicatorState extends State<TodayIndicator> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadiusDirectional.vertical(
                           bottom: Radius.circular(5)),
-                      color: getColor(context, "black").withOpacity(0.4),
+                      color: getColor(context, "black").withValues(alpha: 0.4),
                     ),
                   ),
                 ),
@@ -1090,7 +1090,7 @@ class _TodayIndicatorState extends State<TodayIndicator> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadiusDirectional.vertical(
                     bottom: Radius.circular(5)),
-                color: getColor(context, "black").withOpacity(0.4),
+                color: getColor(context, "black").withValues(alpha: 0.4),
               ),
             ),
           ),
@@ -1291,7 +1291,7 @@ class _BudgetSpenderSummaryState extends State<BudgetSpenderSummary> {
                                   fontSize: 14,
                                   textColor: selectedMember == spender.member
                                       ? getColor(context, "black")
-                                          .withOpacity(0.4)
+                                          .withValues(alpha: 0.4)
                                       : getColor(context, "textLight"),
                                 )
                               ],
@@ -1334,7 +1334,7 @@ class _BudgetSpenderSummaryState extends State<BudgetSpenderSummary> {
                                       textColor:
                                           selectedMember == spender.member
                                               ? getColor(context, "black")
-                                                  .withOpacity(0.4)
+                                                  .withValues(alpha: 0.4)
                                               : getColor(context, "textLight"),
                                     );
                                   }

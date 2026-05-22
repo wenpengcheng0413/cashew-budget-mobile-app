@@ -25,7 +25,7 @@ class LinearGradientFadedEdges extends StatelessWidget {
     // positioned cannot contain negative values
     // If it does, it will clip shadows for some reason...
     Color gradientColorFiltered =
-        gradientColor ?? Theme.of(context).colorScheme.background;
+        gradientColor ?? Theme.of(context).colorScheme.surface;
     return Stack(
       children: [
         child,
@@ -43,7 +43,7 @@ class LinearGradientFadedEdges extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         gradientColorFiltered,
-                        gradientColorFiltered.withOpacity(0.0),
+                        gradientColorFiltered.withValues(alpha: 0.0),
                       ],
                       begin: AlignmentDirectional.centerStart,
                       end: AlignmentDirectional.centerEnd,
@@ -68,7 +68,7 @@ class LinearGradientFadedEdges extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         gradientColorFiltered,
-                        gradientColorFiltered.withOpacity(0.0),
+                        gradientColorFiltered.withValues(alpha: 0.0),
                       ],
                       begin: AlignmentDirectional.centerEnd,
                       end: AlignmentDirectional.centerStart,
@@ -93,7 +93,7 @@ class LinearGradientFadedEdges extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         gradientColorFiltered,
-                        gradientColorFiltered.withOpacity(0.0),
+                        gradientColorFiltered.withValues(alpha: 0.0),
                       ],
                       begin: AlignmentDirectional.topCenter,
                       end: AlignmentDirectional.bottomCenter,
@@ -118,7 +118,7 @@ class LinearGradientFadedEdges extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         gradientColorFiltered,
-                        gradientColorFiltered.withOpacity(0.0),
+                        gradientColorFiltered.withValues(alpha: 0.0),
                       ],
                       begin: AlignmentDirectional.bottomCenter,
                       end: AlignmentDirectional.topCenter,

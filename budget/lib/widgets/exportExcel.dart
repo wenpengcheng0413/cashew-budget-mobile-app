@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:budget/database/tables.dart';
 import 'package:budget/functions.dart';
 import 'package:budget/struct/databaseGlobal.dart';
@@ -11,7 +10,6 @@ import 'package:budget/widgets/openPopup.dart';
 import 'package:budget/widgets/openSnackbar.dart';
 import 'package:budget/widgets/outlinedButtonStacked.dart';
 import 'package:budget/widgets/settingsContainers.dart';
-import 'package:budget/widgets/statusBox.dart';
 import 'package:budget/widgets/util/saveFile.dart';
 import 'package:budget/widgets/util/showDatePicker.dart';
 import 'package:drift/drift.dart' hide Column, Table;

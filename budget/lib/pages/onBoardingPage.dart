@@ -410,7 +410,7 @@ class OnBoardingPageBodyState extends State<OnBoardingPageBody> {
               textAlign: TextAlign.center,
               fontSize: 15,
               maxLines: 5,
-              textColor: getColor(context, "black").withOpacity(0.35),
+              textColor: getColor(context, "black").withValues(alpha: 0.35),
             ),
           ),
         ],
@@ -590,8 +590,8 @@ class OnBoardingPageBodyState extends State<OnBoardingPageBody> {
               foregroundDecoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Theme.of(context).colorScheme.background.withOpacity(0.0),
-                    Theme.of(context).colorScheme.background,
+                    Theme.of(context).colorScheme.surface.withValues(alpha: 0.0),
+                    Theme.of(context).colorScheme.surface,
                   ],
                   begin: AlignmentDirectional.topCenter,
                   end: AlignmentDirectional.bottomCenter,

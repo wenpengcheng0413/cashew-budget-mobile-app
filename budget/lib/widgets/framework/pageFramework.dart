@@ -590,7 +590,7 @@ class PageFrameworkState extends State<PageFramework>
             child: Material(
               elevation: 10,
               shadowColor:
-                  Theme.of(context).colorScheme.shadow.withOpacity(0.8),
+                  Theme.of(context).colorScheme.shadow.withValues(alpha: 0.8),
               borderRadius: BorderRadiusDirectional.circular(
                   getPlatform() == PlatformOS.isIOS ? 10 : 15),
               child: ButtonIcon(
@@ -646,7 +646,7 @@ class PageFrameworkState extends State<PageFramework>
             return Material(
               elevation: 10,
               shadowColor:
-                  Theme.of(context).colorScheme.shadow.withOpacity(0.8),
+                  Theme.of(context).colorScheme.shadow.withValues(alpha: 0.8),
               borderRadius: BorderRadiusDirectional.circular(borderRadius),
               child: Container(
                 height: height,
@@ -1051,7 +1051,7 @@ Color calculateAppBarBGColor({
       : appBarBackgroundColor;
   if (centeredTitleSmall && getPlatform() == PlatformOS.isIOS) {
     appBarBGColorCalculated =
-        appBarBackgroundColor ?? Theme.of(context).colorScheme.background;
+        appBarBackgroundColor ?? Theme.of(context).colorScheme.surface;
   }
   return appBarBGColorCalculated;
 }
@@ -1076,7 +1076,7 @@ List<Widget> getAppBarBackgroundColorLayers({
   );
   return [
     Container(
-      color: appBarBackgroundColor ?? Theme.of(context).colorScheme.background,
+      color: appBarBackgroundColor ?? Theme.of(context).colorScheme.surface,
       // Fixes backdrop not fading correctly when using Impeller (iOS - Flutter v3.13)
       width: MediaQuery.sizeOf(context).width,
       height: MediaQuery.sizeOf(context).height - 1,
@@ -1089,7 +1089,7 @@ List<Widget> getAppBarBackgroundColorLayers({
             height: MediaQuery.sizeOf(context).height - 1,
 
             color: appBarBackgroundColorStart == null
-                ? Theme.of(context).colorScheme.background
+                ? Theme.of(context).colorScheme.surface
                 : appBarBackgroundColorStart,
           ),
     (animationControllerOpacity != null ||

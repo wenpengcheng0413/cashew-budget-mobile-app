@@ -1234,7 +1234,7 @@ class WalletDetailsPageState extends State<WalletDetailsPage>
             enableDoubleColumn(context) && widget.wallet == null ? false : true,
         expandedHeight:
             enableDoubleColumn(context) && widget.wallet == null ? 56 : null,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         scrollController: _scrollController,
         key: pageState,
         listID: listID,
@@ -2582,7 +2582,7 @@ class _AllSpendingPastSpendingGraphState
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                color: Theme.of(context).colorScheme.background,
+                color: Theme.of(context).colorScheme.surface,
                 child: FadeOutAndLockFeature(
                   hasInitiallyDismissed: allSpendingHistoryDismissedPremium,
                   actionAfter: () {
@@ -2656,11 +2656,11 @@ class _AllSpendingPastSpendingGraphState
                   foregroundDecoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Theme.of(context).colorScheme.background,
+                        Theme.of(context).colorScheme.surface,
                         Theme.of(context)
                             .colorScheme
                             .background
-                            .withOpacity(0.0),
+                            .withValues(alpha: 0.0),
                       ],
                       begin: AlignmentDirectional.topCenter,
                       end: AlignmentDirectional.bottomCenter,
@@ -2722,7 +2722,7 @@ class _AllSpendingPastSpendingGraphState
                             ? Theme.of(context)
                                 .colorScheme
                                 .secondaryContainer
-                                .withOpacity(0.3)
+                                .withValues(alpha: 0.3)
                             : Colors.transparent
                         : getColor(context, "standardContainerColor");
 
@@ -2958,7 +2958,7 @@ class AmountSpentEntryRow extends StatelessWidget {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .secondaryContainer
-                                            .withOpacity(0.5),
+                                            .withValues(alpha: 0.5),
                                       ),
                                     ),
                                   ],

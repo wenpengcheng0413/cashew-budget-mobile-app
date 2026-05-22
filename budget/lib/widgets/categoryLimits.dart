@@ -86,7 +86,7 @@ class _CategoryLimitsState extends State<CategoryLimits> {
                             fontSize: 15,
                             textColor: isOver
                                 ? getColor(context, "expenseAmount")
-                                : getColor(context, "black").withOpacity(
+                                : getColor(context, "black").withValues(alpha: 
                                     appStateSettings["increaseTextContrast"] ==
                                             true
                                         ? 0.7
@@ -380,7 +380,7 @@ class CategoryLimitEntry extends StatelessWidget {
                   color: Theme.of(context)
                       .colorScheme
                       .secondaryContainer
-                      .withOpacity(0.3),
+                      .withValues(alpha: 0.3),
                   info: "total".tr(),
                   extraInfoWidget: StreamBuilder<double?>(
                     stream: database
@@ -500,7 +500,7 @@ class SubCategoriesContainer extends StatelessWidget {
             color: Theme.of(context)
                 .colorScheme
                 .secondaryContainer
-                .withOpacity(getPlatform() == PlatformOS.isIOS ? 0.15 : 0.5),
+                .withValues(alpha: getPlatform() == PlatformOS.isIOS ? 0.15 : 0.5),
             borderRadius: BorderRadiusDirectional.vertical(
               top: Radius.circular(
                 getPlatform() == PlatformOS.isIOS ? 0 : 14,
@@ -526,7 +526,7 @@ class SubCategoriesContainer extends StatelessWidget {
             color: Theme.of(context)
                 .colorScheme
                 .secondaryContainer
-                .withOpacity(0.3),
+                .withValues(alpha: 0.3),
           ),
           HorizontalBreak(padding: EdgeInsetsDirectional.zero),
           SizedBox(height: 6),
@@ -543,7 +543,7 @@ class SubCategoriesContainer extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(
                 color: (appStateSettings["materialYou"]
-                    ? Theme.of(context).colorScheme.secondary.withOpacity(0.5)
+                    ? Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5)
                     : getColor(context, "lightDarkAccentHeavy")),
                 width: 2,
               ),

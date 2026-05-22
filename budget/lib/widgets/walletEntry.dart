@@ -52,7 +52,7 @@ class WalletEntry extends StatelessWidget {
                       ? HexColor(walletWithDetails.wallet.colour,
                               defaultColor:
                                   Theme.of(context).colorScheme.primary)
-                          .withOpacity(0.7)
+                          .withValues(alpha: 0.7)
                       : Colors.transparent,
                 ),
               ),
@@ -72,7 +72,7 @@ class WalletEntry extends StatelessWidget {
                           color: HexColor(walletWithDetails.wallet.colour,
                                   defaultColor:
                                       Theme.of(context).colorScheme.primary)
-                              .withOpacity(0.7),
+                              .withValues(alpha: 0.7),
                         ),
                         width: 20,
                         height: 20,
@@ -105,7 +105,7 @@ class WalletEntry extends StatelessWidget {
                                     : "transactions".tr().toLowerCase()),
                             fontSize: 14,
                             textColor:
-                                getColor(context, "black").withOpacity(0.65),
+                                getColor(context, "black").withValues(alpha: 0.65),
                           ),
                         ],
                       ),
@@ -198,7 +198,7 @@ class WalletEntryRow extends StatelessWidget {
                                       walletWithDetails.wallet.colour,
                                       defaultColor:
                                           Theme.of(context).colorScheme.primary,
-                                    ).withOpacity(0.7),
+                                    ).withValues(alpha: 0.7),
                                   ),
                                   width: 20,
                                   height: 20,
@@ -216,7 +216,7 @@ class WalletEntryRow extends StatelessWidget {
                                           defaultColor: Theme.of(context)
                                               .colorScheme
                                               .primary,
-                                        ).withOpacity(0.7),
+                                        ).withValues(alpha: 0.7),
                                       ),
                                     ),
                                     width: 20,

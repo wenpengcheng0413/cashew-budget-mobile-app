@@ -150,7 +150,7 @@ class _RadioItemsState<T> extends State<RadioItems<T>> {
                 },
                 fillColor: widget.colorFilter != null &&
                         widget.colorFilter!(item) != null
-                    ? MaterialStateColor.resolveWith(
+                    ? WidgetStateColor.resolveWith(
                         (states) => widget.colorFilter!(item)!)
                     : null,
                 activeColor: Theme.of(context).colorScheme.primary,

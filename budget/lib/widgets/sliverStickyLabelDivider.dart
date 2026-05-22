@@ -66,7 +66,7 @@ class StickyLabelDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: color == null ? Theme.of(context).colorScheme.background : color,
+      color: color == null ? Theme.of(context).colorScheme.surface : color,
       padding: EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 5),
       alignment: AlignmentDirectional.centerStart,
       child: Row(

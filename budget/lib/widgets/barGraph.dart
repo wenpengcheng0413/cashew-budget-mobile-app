@@ -84,18 +84,18 @@ class BarGraphState extends State<BarGraph> {
                     dashArray: [2, 2],
                     strokeWidth: 2,
                     color: dynamicPastel(context, widget.color, amount: 0.3)
-                        .withOpacity(0.7),
+                        .withValues(alpha: 0.7),
                   );
                 } else if (value == 0) {
                   return FlLine(
                     color: dynamicPastel(context, widget.color, amount: 0.3)
-                        .withOpacity(0.2),
+                        .withValues(alpha: 0.2),
                     strokeWidth: 2,
                   );
                 } else if (value % ((widget.maxY / 3.8).ceil()) == 1) {
                   return FlLine(
                     color: dynamicPastel(context, widget.color, amount: 0.3)
-                        .withOpacity(0.2),
+                        .withValues(alpha: 0.2),
                     strokeWidth: 2,
                     dashArray: [2, 8],
                   );
@@ -105,7 +105,7 @@ class BarGraphState extends State<BarGraph> {
               getDrawingVerticalLine: (value) {
                 return FlLine(
                   color: dynamicPastel(context, widget.color, amount: 0.3)
-                      .withOpacity(0.2),
+                      .withValues(alpha: 0.2),
                   strokeWidth: 2,
                   dashArray: [2, 8],
                 );
@@ -140,7 +140,7 @@ class BarGraphState extends State<BarGraph> {
                                           .dateRanges[value.toInt()].start),
                           textColor: dynamicPastel(context, widget.color,
                                   amount: 0.8, inverse: true)
-                              .withOpacity(0.5),
+                              .withValues(alpha: 0.5),
                         ),
                       );
                     }),
@@ -170,7 +170,7 @@ class BarGraphState extends State<BarGraph> {
                             context, Provider.of<AllWallets>(context), value),
                         textColor: dynamicPastel(context, widget.color,
                                 amount: 0.5, inverse: true)
-                            .withOpacity(0.3),
+                            .withValues(alpha: 0.3),
                         fontSize: 13,
                       ),
                     );

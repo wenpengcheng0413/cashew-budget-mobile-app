@@ -231,7 +231,7 @@ class _ImportCSVState extends State<ImportCSV> {
               amountDark: 0.2,
               amountLight: 0.35,
             )
-          : getColor(context, "lightDarkAccentHeavyLight").withOpacity(0.6);
+          : getColor(context, "lightDarkAccentHeavyLight").withValues(alpha: 0.6);
       openBottomSheet(
         context,
         PopupFramework(
@@ -621,7 +621,7 @@ class _ImportCSVState extends State<ImportCSV> {
                       ? Icons.download_outlined
                       : Icons.download_rounded,
                   size: 18,
-                  color: getColor(context, "black").withOpacity(0.5),
+                  color: getColor(context, "black").withValues(alpha: 0.5),
                 ),
               ),
               text: "template".tr(),
@@ -647,7 +647,7 @@ class _ImportCSVState extends State<ImportCSV> {
                     ? Icons.open_in_new_outlined
                     : Icons.open_in_new_rounded,
                 size: 18,
-                color: getColor(context, "black").withOpacity(0.5),
+                color: getColor(context, "black").withValues(alpha: 0.5),
               ),
             ),
             text: "template".tr(),

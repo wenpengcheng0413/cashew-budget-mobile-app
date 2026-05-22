@@ -130,10 +130,9 @@ Future updateWidgetColorsAndText(BuildContext context) async {
     );
     await HomeWidget.saveWidgetData<String>(
       'widgetAlpha',
-      widgetTheme.colorScheme.secondaryContainer
-          .withOpacity(widgetBackgroundOpacity)
-          .alpha
-          .toString(),
+      (widgetTheme.colorScheme.secondaryContainer
+          .withValues(alpha: widgetBackgroundOpacity)
+          .a * 255.0).round().clamp(0, 255).toString(),
     );
     await HomeWidget.saveWidgetData<String>(
       'widgetColorPrimary',

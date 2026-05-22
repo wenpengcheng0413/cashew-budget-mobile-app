@@ -149,7 +149,7 @@ class PlatformSwitch extends StatelessWidget {
       );
     } else {
       return Switch(
-        activeColor: Theme.of(context).colorScheme.primary,
+        activeTrackColor: Theme.of(context).colorScheme.primary,
         value: value,
         onChanged: (_) {
           onTap();
@@ -207,7 +207,7 @@ class SettingsContainerOpenPage extends StatelessWidget {
         onClosed: onClosed,
         onOpen: onOpen,
         closedColor:
-            backgroundColor ?? Theme.of(context).colorScheme.background,
+            backgroundColor ?? Theme.of(context).colorScheme.surface,
         borderRadius: isOutlined == true
             ? 10
             : getIsFullScreen(context)
@@ -394,7 +394,7 @@ class SettingsContainerOutlined extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: (appStateSettings["materialYou"]
-                ? Theme.of(context).colorScheme.secondary.withOpacity(0.5)
+                ? Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5)
                 : getColor(context, "lightDarkAccentHeavy")),
             width: 2,
           ),
@@ -423,7 +423,7 @@ class SettingsContainerOutlined extends StatelessWidget {
             TextFont(
               text: title,
               fontSize: 13,
-              textColor: getColor(context, "black").withOpacity(0.8),
+              textColor: getColor(context, "black").withValues(alpha: 0.8),
               maxLines: 2,
               autoSizeText: true,
               textAlign: TextAlign.center,
@@ -460,7 +460,7 @@ class SettingsContainerOutlined extends StatelessWidget {
                       : Theme.of(context)
                           .colorScheme
                           .secondary
-                          .withOpacity(0.5),
+                          .withValues(alpha: 0.5),
                 ),
               ],
             );
@@ -468,7 +468,7 @@ class SettingsContainerOutlined extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: (appStateSettings["materialYou"]
-                ? Theme.of(context).colorScheme.secondary.withOpacity(0.5)
+                ? Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5)
                 : getColor(context, "lightDarkAccentHeavy")),
             width: 2,
           ),

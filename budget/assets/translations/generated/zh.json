@@ -1180,5 +1180,11 @@
   "import-warning": "进口警告",
   "import-warning-description": "导入可能会失败！请确保您选择了有效的 Cashew [.sqlite] 或 [.sql] 备份文件",
   "duplicate-budget-question": "预算重复？",
-  "duplicate-budget": "重复预算"
+  "duplicate-budget": "重复预算",
+  "import-excel": "导入 Excel",
+  "export-excel": "导出 Excel",
+  "excel-error": "Excel 错误",
+  "excel-saved-success": "Excel 文件保存成功！",
+  "assign-columns-excel": "分配 Excel 列",
+  "transactions-in-the-excel": "Excel 中的交易记录"
 }

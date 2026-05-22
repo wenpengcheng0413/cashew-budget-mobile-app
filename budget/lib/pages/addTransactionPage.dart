@@ -516,7 +516,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                       containerColor: Theme.of(context)
                           .colorScheme
                           .secondaryContainer
-                          .withOpacity(0.4),
+                          .withValues(alpha: 0.4),
                       customPadding: EdgeInsetsDirectional.zero,
                     ),
                     SizedBox(height: 5),
@@ -1762,8 +1762,8 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                       initialTabIsIncome: selectedIncome,
                       syncWithInitial: true,
                       color: categoryColor,
-                      unselectedColor: Colors.black.withOpacity(0.2),
-                      unselectedLabelColor: Colors.white.withOpacity(0.3),
+                      unselectedColor: Colors.black.withValues(alpha: 0.2),
+                      unselectedLabelColor: Colors.white.withValues(alpha: 0.3),
                       incomeLabel: isAddedToLoanObjective
                           ? "collected".tr()
                           : selectedType == TransactionSpecialType.debt ||
@@ -1801,7 +1801,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                         children: [
                           Expanded(
                             child: Tappable(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withValues(alpha: 0.2),
                               onTap: () async {
                                 openTransferBalancePopup();
                               },
@@ -2238,7 +2238,7 @@ class SelectIncludeAmount extends StatelessWidget {
       title: "include-amount".tr(),
       enableBorderRadius: true,
       backgroundColor:
-          Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
+          Theme.of(context).colorScheme.secondaryContainer.withValues(alpha: 0.7),
       initialValue: selectedPaid,
       onSwitched: onSwitched,
     );
@@ -3493,7 +3493,7 @@ Future checkToDeleteCloselyRelatedBalanceCorrectionTransaction(
                 containerColor: Theme.of(context)
                     .colorScheme
                     .secondaryContainer
-                    .withOpacity(0.4),
+                    .withValues(alpha: 0.4),
                 customPadding: EdgeInsetsDirectional.zero,
               ),
               SizedBox(height: 5),
@@ -3716,7 +3716,7 @@ class SelectTransactionTypePopup extends StatelessWidget {
                     containerColor: Theme.of(context)
                         .colorScheme
                         .background
-                        .withOpacity(0.5),
+                        .withValues(alpha: 0.5),
                     transaction: Transaction(
                       transactionPk: "-1",
                       name: "",
@@ -4746,7 +4746,7 @@ class SelectSubcategoryChips extends StatelessWidget {
                         selectedColor: Theme.of(context)
                             .colorScheme
                             .background
-                            .withOpacity(0.6),
+                            .withValues(alpha: 0.6),
                         onLongPress: (category) {
                           pushRoute(
                             context,
@@ -4777,7 +4777,7 @@ class SelectSubcategoryChips extends StatelessWidget {
                             ),
                             amountDark: 0.55,
                             amountLight: 0.3,
-                          ).withOpacity(
+                          ).withValues(alpha: 
                             Theme.of(context).brightness == Brightness.light
                                 ? 0.8
                                 : 1,
@@ -4795,7 +4795,7 @@ class SelectSubcategoryChips extends StatelessWidget {
                                       Brightness.light
                                   ? 0.8
                                   : 0.4,
-                            ).withOpacity(
+                            ).withValues(alpha: 
                               Theme.of(context).brightness == Brightness.light
                                   ? 0.8
                                   : 0.65,
@@ -4811,7 +4811,7 @@ class SelectSubcategoryChips extends StatelessWidget {
                               amount: 0.3,
                             ),
                             amount: 0.4,
-                          ).withOpacity(
+                          ).withValues(alpha: 
                             Theme.of(context).brightness == Brightness.light
                                 ? 0.5
                                 : 0.7,

@@ -73,7 +73,7 @@ class _RatingPopupState extends State<RatingPopup> {
                 ? (getWidthBottomSheet(context) - 100) / 5
                 : 60,
             color: appStateSettings["materialYou"]
-                ? Theme.of(context).colorScheme.primary.withOpacity(0.7)
+                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.7)
                 : getColor(context, "starYellow"),
           ),
           SizedBox(height: 15),
@@ -309,7 +309,7 @@ class ScalingStars extends StatelessWidget {
                             ? Theme.of(context)
                                 .colorScheme
                                 .secondary
-                                .withOpacity(0.2)
+                                .withValues(alpha: 0.2)
                             : getColor(context, "lightDarkAccentHeavy"),
                   ),
                 ),

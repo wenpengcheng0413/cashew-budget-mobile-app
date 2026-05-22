@@ -1,12 +1,9 @@
-import 'dart:math';
 import 'dart:ui';
 import 'package:budget/colors.dart';
 import 'package:budget/functions.dart';
 import 'package:budget/pages/addTransactionPage.dart';
-import 'package:budget/pages/editBudgetPage.dart';
 import 'package:budget/pages/walletDetailsPage.dart';
 import 'package:budget/struct/settings.dart';
-import 'package:budget/widgets/animatedExpanded.dart';
 import 'package:budget/widgets/fab.dart';
 import 'package:budget/widgets/framework/popupFramework.dart';
 import 'package:budget/widgets/globalSnackbar.dart';
@@ -131,11 +128,11 @@ class _DateRangePickerPopupState extends State<DateRangePickerPopup> {
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
                   backgroundColor:
-                      Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                      Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
                   disabledBackgroundColor: Theme.of(context)
                       .colorScheme
                       .secondaryContainer
-                      .withOpacity(0.5),
+                      .withValues(alpha: 0.5),
                   animationDuration: Duration(milliseconds: 250),
                   textStyle:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15),

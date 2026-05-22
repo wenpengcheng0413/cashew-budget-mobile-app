@@ -227,8 +227,8 @@ class BottomNavBarState extends State<BottomNavBar> {
               ? dynamicPastel(context, Theme.of(context).colorScheme.primary,
                   amount: 0.6)
               : null,
-          labelTextStyle: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.selected)) {
+          labelTextStyle: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
               return TextStyle(
                 fontFamily: appStateSettings["font"],
                 fontFamilyFallback: ['Inter'],
@@ -576,7 +576,7 @@ class NavBarIcon extends StatelessWidget {
                         : Theme.of(context)
                             .colorScheme
                             .secondary
-                            .withOpacity(0.3),
+                            .withValues(alpha: 0.3),
                   ),
                   height: 52,
                   width: 52,

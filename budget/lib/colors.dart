@@ -49,9 +49,9 @@ AppColors getAppColors(
             "white": Colors.white,
             "black": Colors.black,
             "textLight": appStateSettings["increaseTextContrast"]
-                ? Colors.black.withOpacity(0.7)
+                ? Colors.black.withValues(alpha: 0.7)
                 : appStateSettings["materialYou"]
-                    ? Colors.black.withOpacity(0.4)
+                    ? Colors.black.withValues(alpha: 0.4)
                     : Color(0xFF888888),
             "lightDarkAccent": appStateSettings["materialYou"]
                 ? lightenPastel(accentColor, amount: 0.6)
@@ -71,7 +71,7 @@ AppColors getAppColors(
                 ? Color(0x0F000000)
                 : Color(0xFFF0F0F0),
             "standardContainerColor": getPlatform() == PlatformOS.isIOS
-                ? themeData.colorScheme.background
+                ? themeData.colorScheme.surface
                 : appStateSettings["materialYou"]
                     ? lightenPastel(
                         themeData.colorScheme.secondaryContainer,
@@ -85,9 +85,9 @@ AppColors getAppColors(
             "white": Colors.black,
             "black": Colors.white,
             "textLight": appStateSettings["increaseTextContrast"]
-                ? Colors.white.withOpacity(0.65)
+                ? Colors.white.withValues(alpha: 0.65)
                 : appStateSettings["materialYou"]
-                    ? Colors.white.withOpacity(0.25)
+                    ? Colors.white.withValues(alpha: 0.25)
                     : Color(0xFF494949),
             "lightDarkAccent": appStateSettings["materialYou"]
                 ? darkenPastel(accentColor, amount: 0.83)
@@ -109,7 +109,7 @@ AppColors getAppColors(
                 ? Color(0x13FFFFFF)
                 : Color(0x6F363636),
             "standardContainerColor": getPlatform() == PlatformOS.isIOS
-                ? themeData.colorScheme.background
+                ? themeData.colorScheme.surface
                 : appStateSettings["materialYou"]
                     ? darkenPastel(
                         themeData.colorScheme.secondaryContainer,
@@ -190,21 +190,21 @@ Color lighten(Color color, [double amount = .1]) {
 
 Color lightenPastel(Color color, {double amount = 0.1}) {
   return Color.alphaBlend(
-    Colors.white.withOpacity(amount),
+    Colors.white.withValues(alpha: amount),
     color,
   );
 }
 
 Color darkenPastel(Color color, {double amount = 0.1}) {
   return Color.alphaBlend(
-    Colors.black.withOpacity(amount),
+    Colors.black.withValues(alpha: amount),
     color,
   );
 }
 
 Color blend(Color colorToBlend, Color baseColor, {double amount = 0.1}) {
   return Color.alphaBlend(
-    baseColor.withOpacity(amount),
+    baseColor.withValues(alpha: amount),
     colorToBlend,
   );
 }
@@ -252,9 +252,9 @@ class HexColor extends Color {
     try {
       if (hexColor == null) {
         if (defaultColor == null) {
-          return Colors.grey.value;
+          return Colors.grey.toARGB32();
         } else {
-          return defaultColor.value;
+          return defaultColor.toARGB32();
         }
       }
       hexColor = hexColor.replaceAll("#", "");
@@ -264,7 +264,7 @@ class HexColor extends Color {
       }
       return int.parse(hexColor, radix: 16);
     } catch (e) {
-      return Colors.grey.value;
+      return Colors.grey.toARGB32();
     }
   }
 
@@ -276,7 +276,7 @@ String? toHexString(Color? color) {
   if (color == null) {
     return null;
   }
-  String valueString = color.value.toRadixString(16);
+  String valueString = color.toARGB32().toRadixString(16);
   return "0x" + valueString;
 }
 
@@ -373,9 +373,9 @@ bool supportsSystemColor() {
 }
 
 bool isGrayScale(Color color, {int threshold = 10}) {
-  int red = color.red;
-  int green = color.green;
-  int blue = color.blue;
+  int red = (color.r * 255.0).round().clamp(0, 255);
+  int green = (color.g * 255.0).round().clamp(0, 255);
+  int blue = (color.b * 255.0).round().clamp(0, 255);
 
   return (red - green).abs() <= threshold &&
       (red - blue).abs() <= threshold &&
@@ -393,7 +393,7 @@ ColorScheme getColorScheme(Brightness brightness) {
     return ColorScheme.fromSeed(
       seedColor: getSettingConstants(appStateSettings)["accentColor"],
       brightness: Brightness.light,
-      background: appStateSettings["materialYou"]
+      surface: appStateSettings["materialYou"]
           ? lightenPastel(getSettingConstants(appStateSettings)["accentColor"],
               amount: 0.91)
           : Colors.white,
@@ -402,7 +402,7 @@ ColorScheme getColorScheme(Brightness brightness) {
     return ColorScheme.fromSeed(
       seedColor: getSettingConstants(appStateSettings)["accentColor"],
       brightness: Brightness.dark,
-      background: appStateSettings["forceFullDarkBackground"] == true
+      surface: appStateSettings["forceFullDarkBackground"] == true
           ? Colors.black
           : appStateSettings["materialYou"]
               ? darkenPastel(
@@ -435,15 +435,12 @@ ColorScheme getGrayScaleColorScheme(Brightness brightness) {
       onErrorContainer: Colors.black,
       surface: Colors.grey[200]!,
       onSurface: Colors.black,
-      background:
-          appStateSettings["materialYou"] ? Colors.blueGrey[50]! : Colors.white,
-      onBackground: Colors.black,
-      surfaceVariant: Colors.grey[100]!,
+      surfaceContainerHighest: Colors.grey[100]!,
       onSurfaceVariant: Colors.black,
       outline: Colors.grey[500]!,
       outlineVariant: Colors.grey[400],
       shadow: Colors.black,
-      scrim: Colors.black.withOpacity(0.5),
+      scrim: Colors.black.withValues(alpha: 0.5),
       inverseSurface: Colors.grey[800],
       onInverseSurface: Colors.white,
       inversePrimary: Colors.blueGrey[300],
@@ -468,20 +465,18 @@ ColorScheme getGrayScaleColorScheme(Brightness brightness) {
       onError: Colors.black,
       errorContainer: Colors.red[900],
       onErrorContainer: Colors.white,
-      surface: Colors.grey[900]!,
-      onSurface: Colors.white,
-      background: appStateSettings["forceFullDarkBackground"] == true
+      surface: appStateSettings["forceFullDarkBackground"] == true
           ? Colors.black
           : appStateSettings["materialYou"]
               ? Color(0xFF0F0F0F)
               : Colors.black,
-      onBackground: Colors.white,
-      surfaceVariant: Colors.grey[800]!,
+      onSurface: Colors.white,
+      surfaceContainerHighest: Colors.grey[800]!,
       onSurfaceVariant: Colors.white,
       outline: Colors.grey[600]!,
       outlineVariant: Colors.grey[500],
       shadow: Colors.black,
-      scrim: Colors.black.withOpacity(0.7),
+      scrim: Colors.black.withValues(alpha: 0.7),
       inverseSurface: Colors.grey[100],
       onInverseSurface: Colors.black,
       inversePrimary: Colors.blueGrey[800],
@@ -552,7 +547,7 @@ Color getBottomNavbarBackgroundColor({
 // For Android widget hex color code conversion
 String colorToHex(Color color) {
   Color opaqueColor = color.withAlpha(255);
-  String hexString = opaqueColor.value.toRadixString(16).padLeft(6, '0');
+  String hexString = opaqueColor.toARGB32().toRadixString(16).padLeft(6, '0');
   return "#" + hexString.substring(2);
 }
 
@@ -568,7 +563,7 @@ class CustomColorTheme extends StatelessWidget {
     ColorScheme colorScheme = ColorScheme.fromSeed(
       seedColor: accentColor!,
       brightness: determineBrightnessTheme(context),
-      background: determineBrightnessTheme(context) == Brightness.dark
+      surface: determineBrightnessTheme(context) == Brightness.dark
           ? (appStateSettings["forceFullDarkBackground"] == true
               ? Colors.black
               : appStateSettings["materialYou"]
@@ -633,7 +628,7 @@ ThemeData getLightTheme() {
                         getSettingConstants(appStateSettings)["accentColor"],
                         amount: 0.8),
                     amount: 0.2)
-                .withOpacity(0.5)
+                .withValues(alpha: 0.5)
             : null,
   );
   return generateThemeDataWithExtension(
@@ -666,7 +661,7 @@ ThemeData getDarkTheme() {
                         getSettingConstants(appStateSettings)["accentColor"],
                         amount: 0.86),
                     amount: 0.1)
-                .withOpacity(0.2)
+                .withValues(alpha: 0.2)
             : null,
   );
   return generateThemeDataWithExtension(

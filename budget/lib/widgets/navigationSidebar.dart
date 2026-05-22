@@ -106,7 +106,7 @@ class NavigationSidebarState extends State<NavigationSidebar> {
         width: getWidthNavigationSidebar(context),
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
             border: BorderDirectional(
               end: BorderSide(
                 color: appStateSettings["materialYou"]
@@ -406,7 +406,7 @@ class SidebarClock extends StatelessWidget {
                               ],
                             ),
                       TextFont(
-                        textColor: getColor(context, "black").withOpacity(0.5),
+                        textColor: getColor(context, "black").withValues(alpha: 0.5),
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         text: DateFormat('EEEE', context.locale.toString())
@@ -417,7 +417,7 @@ class SidebarClock extends StatelessWidget {
                       ),
                       SizedBox(height: 5),
                       TextFont(
-                        textColor: getColor(context, "black").withOpacity(0.5),
+                        textColor: getColor(context, "black").withValues(alpha: 0.5),
                         fontSize: 18,
                         text: DateFormat.yMMMMd(context.locale.toString())
                             .format(now),
@@ -518,7 +518,7 @@ class _SyncButtonState extends State<SyncButton> {
                                       ? Theme.of(context)
                                           .colorScheme
                                           .onErrorContainer
-                                          .withOpacity(0.5)
+                                          .withValues(alpha: 0.5)
                                       : getColor(context, "textLight"),
                                   fontSize: 13,
                                   maxLines: 3,

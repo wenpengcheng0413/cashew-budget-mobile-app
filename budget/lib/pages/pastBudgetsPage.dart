@@ -267,7 +267,7 @@ class __PastBudgetsPageContentState extends State<_PastBudgetsPageContent> {
             : appStateSettings["materialYou"]
                 ? dynamicPastel(context, Theme.of(context).colorScheme.primary,
                     amount: 0.92)
-                : Theme.of(context).colorScheme.background;
+                : Theme.of(context).colorScheme.surface;
     double budgetAmount = budgetAmountToPrimaryCurrency(
         Provider.of<AllWallets>(context, listen: true), widget.budget);
 
@@ -525,7 +525,7 @@ class __PastBudgetsPageContentState extends State<_PastBudgetsPageContent> {
                           gradient: LinearGradient(
                             colors: [
                               pageBackgroundColor,
-                              pageBackgroundColor.withOpacity(0.0),
+                              pageBackgroundColor.withValues(alpha: 0.0),
                             ],
                             begin: AlignmentDirectional.topCenter,
                             end: AlignmentDirectional.bottomCenter,
@@ -560,7 +560,7 @@ class __PastBudgetsPageContentState extends State<_PastBudgetsPageContent> {
                       gradient: LinearGradient(
                         colors: [
                           pageBackgroundColor,
-                          pageBackgroundColor.withOpacity(0.0),
+                          pageBackgroundColor.withValues(alpha: 0.0),
                         ],
                         begin: AlignmentDirectional.topCenter,
                         end: AlignmentDirectional.bottomCenter,
@@ -740,7 +740,7 @@ class LoadMorePeriodsButton extends StatelessWidget {
                   ? Icons.history_outlined
                   : Icons.history_rounded,
               size: 22,
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
             ),
             onPressed: onPressed,
           ),
@@ -1339,7 +1339,7 @@ class CategoryAverageSpent extends StatelessWidget {
                           //           : "transactions".tr().toLowerCase()),
                           //   fontSize: 13,
                           //   textColor: selected
-                          //       ? getColor(context, "black").withOpacity(0.4)
+                          //       ? getColor(context, "black").withValues(alpha: 0.4)
                           //       : getColor(context, "textLight"),
                           // ),
                         ],

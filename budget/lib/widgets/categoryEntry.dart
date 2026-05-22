@@ -241,7 +241,7 @@ class CategoryEntry extends StatelessWidget {
                                                   getColor(
                                                       context, "expenseAmount")
                                               : getColor(context, "black")
-                                                  .withOpacity(0.3),
+                                                  .withValues(alpha: 0.3),
                                         ),
                                       ),
                               ],
@@ -308,7 +308,7 @@ class CategoryEntry extends StatelessWidget {
                                         fontSize: 14,
                                         textColor: selected
                                             ? getColor(context, "black")
-                                                .withOpacity(0.4)
+                                                .withValues(alpha: 0.4)
                                             : getColor(context, "textLight"),
                                       );
                                     }),
@@ -321,7 +321,7 @@ class CategoryEntry extends StatelessWidget {
                                       : "transactions".tr().toLowerCase()),
                               fontSize: 14,
                               textColor: selected
-                                  ? getColor(context, "black").withOpacity(0.4)
+                                  ? getColor(context, "black").withValues(alpha: 0.4)
                                   : getColor(context, "textLight"),
                             ),
                           ],

@@ -576,7 +576,7 @@ class HomePageEditRowEntry extends StatelessWidget {
                   onChanged: (value) => toggleSwitch(),
                 )
               : Switch(
-                  activeColor: Theme.of(context).colorScheme.primary,
+                  activeTrackColor: Theme.of(context).colorScheme.primary,
                   value: switchValue,
                   onChanged: (value) => toggleSwitch(),
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

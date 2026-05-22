@@ -1,0 +1,33 @@
+workflows:
+  ios-sideload-build:
+    name: iOS Sideload IPA Build
+    instance_type: mac_mini_m1
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      ios_signing:
+        distribution_type: development
+        bundle_identifier: com.budget.tracker-app
+    triggering:
+      events:
+        - push
+        - tag
+      branch_patterns:
+        - pattern: main
+          include: true
+      tag_patterns:
+        - pattern: ios-v*
+          include: true
+    scripts:
+      - name: Install Flutter dependencies
+        script: flutter pub get
+      - name: Run build_runner for drift database
+        script: dart run build_runner build --delete-conflicting-outputs
+      - name: Set up iOS code signing
+        script: xcode-project use-profiles
+      - name: Build iOS IPA
+        script: flutter build ipa --release
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/xcarchive/*.xcarchive

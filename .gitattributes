@@ -1,0 +1,36 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Dart/Flutter source files
+*.dart text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.xml text eol=lf
+*.plist text eol=lf
+*.md text eol=lf
+*.gradle text eol=lf
+*.properties text eol=lf
+*.sh text eol=lf
+*.pbxproj text eol=lf
+*.xcscheme text eol=lf
+*.entitlements text eol=lf
+*.podspec text eol=lf
+Makefile text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.otf binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.dylib binary
+*.framework binary
+*.a binary
+*.car binary
