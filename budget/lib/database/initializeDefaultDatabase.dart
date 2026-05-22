@@ -27,9 +27,7 @@ Future<bool> createDefaultCategories() async {
   for (TransactionCategory category in defaultCategories()) {
     try {
       await database.getCategory(category.categoryPk).$2;
-    } catch (e) {
-      print(
-          e.toString() + " default category does not already exist, creating");
+    } on StateError {
       await database.createOrUpdateCategory(category,
           customDateTimeModified: DateTime(0));
     }
