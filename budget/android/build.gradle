@@ -1,31 +1,23 @@
-buildscript {
-    ext.kotlin_version = '1.9.0'
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.14'
-    }
-}
-
 allprojects {
     repositories {
+        maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url "https://maven.aliyun.com/repository/central" }
         google()
-        jcenter()
         mavenCentral()
     }
 }
 
-rootProject.buildDir = '../build'
+rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-    project.evaluationDependsOn(':app')
 }
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+// Kotlin 2.2.20 defaults JVM target to 21. For plugins that
+// target older Java, we patch the specific plugin's build.gradle.
+// See flutter_charset_detector_android fix in pub cache.
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
