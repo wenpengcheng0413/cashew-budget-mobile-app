@@ -137,7 +137,8 @@ class _ImportCSVState extends State<ImportCSV> {
             "FormattedDate", //For the Google Sheet template
             "date",
             "date created",
-            "dateCreated"
+            "dateCreated",
+            "日期",
           ],
           "required": true,
           "setHeaderValue": "",
@@ -145,14 +146,14 @@ class _ImportCSVState extends State<ImportCSV> {
         },
         "amount": {
           "displayName": "amount",
-          "headerValues": ["amount"],
+          "headerValues": ["amount", "金额"],
           "required": true,
           "setHeaderValue": "",
           "setHeaderIndex": -1,
         },
         "category": {
           "displayName": "category",
-          "headerValues": ["category", "category name", "categoryName"],
+          "headerValues": ["category", "category name", "categoryName", "类别"],
           // "extraOptions": ["Use Smart Categories"],
           //This will be implemented later... in the future
           //Use title to determine category. If smart category entry not found, ask user to select which category when importing. Save these selections to that category.
@@ -162,21 +163,21 @@ class _ImportCSVState extends State<ImportCSV> {
         },
         "name": {
           "displayName": "title",
-          "headerValues": ["title", "name"],
+          "headerValues": ["title", "name", "描述", "标题"],
           "required": false,
           "setHeaderValue": "",
           "setHeaderIndex": -1,
         },
         "note": {
           "displayName": "note",
-          "headerValues": ["note"],
+          "headerValues": ["note", "备注", "个人"],
           "required": false,
           "setHeaderValue": "",
           "setHeaderIndex": -1,
         },
         "wallet": {
           "displayName": "account",
-          "headerValues": ["wallet", "account", "accountName", "account name"],
+          "headerValues": ["wallet", "account", "accountName", "account name", "账户名称", "账户", "钱包"],
           "required": true,
           "setHeaderValue": "",
           "setHeaderIndex": -1,
