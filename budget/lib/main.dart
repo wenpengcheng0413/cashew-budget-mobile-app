@@ -1,4 +1,5 @@
 import 'package:budget/functions.dart';
+import 'package:budget/integrations/miru/miru_sync.dart';
 import 'package:budget/pages/accountsPage.dart';
 import 'package:budget/pages/autoTransactionsPageEmail.dart';
 import 'package:budget/struct/currencyFunctions.dart';
@@ -168,9 +169,9 @@ class App extends StatelessWidget {
 
         if (kIsWeb) {
           return FadeIn(
-              duration: Duration(milliseconds: 1000), child: mainWidget);
+              duration: Duration(milliseconds: 1000), child: MiruSyncHost(child: mainWidget));
         } else {
-          return mainWidget;
+          return MiruSyncHost(child: mainWidget);
         }
       },
       // ),

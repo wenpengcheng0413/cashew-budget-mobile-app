@@ -1,4 +1,5 @@
 import 'package:budget/colors.dart';
+import 'package:budget/pages/miruSyncPage.dart';
 import 'package:budget/database/tables.dart' hide AppSettings;
 import 'package:budget/pages/aboutPage.dart';
 import 'package:budget/pages/addTransactionPage.dart';
@@ -619,6 +620,12 @@ class SettingsPageContent extends StatelessWidget {
         ImportExcel(),
 
         SettingsHeader(title: "backups".tr()),
+
+        SettingsContainerOpenPage(
+          openPage: MiruSyncPage(),
+          title: "米汝同步",
+          icon: Icons.sync,
+        ),
 
         ExportDB(),
 

@@ -5,7 +5,7 @@ workflows:
     max_build_duration: 60
     working_directory: budget
     environment:
-      flutter: stable
+      flutter: 3.44.0
       xcode: latest
     triggering:
       events:
@@ -24,6 +24,8 @@ workflows:
         script: flutter clean && rm -f ios/Podfile.lock && rm -rf ios/Pods
       - name: Install Flutter dependencies
         script: flutter pub get
+      - name: Check Miru sync protocol
+        script: dart tool/miru_protocol_check.dart
       - name: Run build_runner for drift database
         script: dart run build_runner build --delete-conflicting-outputs
       - name: Update CocoaPods specs repo
@@ -31,6 +33,6 @@ workflows:
       - name: Build iOS app (unsigned)
         script: flutter build ios --release --no-codesign
       - name: Package IPA (Payload/ditto)
-        script: rm -rf Payload && mkdir Payload && cp -R build/ios/iphoneos/Runner.app Payload/ && ditto -c -k --keepParent Payload build/ios/ipa/Runner.ipa && rm -rf Payload
+        script: rm -rf Payload && mkdir -p Payload build/ios/ipa && cp -R build/ios/iphoneos/Runner.app Payload/ && ditto -c -k --keepParent Payload build/ios/ipa/Runner.ipa && rm -rf Payload
     artifacts:
       - build/ios/ipa/Runner.ipa
