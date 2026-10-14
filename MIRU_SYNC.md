@@ -1,4 +1,10 @@
-# Miru ledger sync (iOS, 5.4.3+417)
+# Miru ledger sync (iOS, 5.4.3+418)
+
+## Build 418: first-upload and LiveContainer flow fix
+
+The first pairing was accepted by the server, but Drift's generated `toJson()` retains enum lists for wallet home-page settings and budget filters. Plain `jsonEncode()` failed before sending the first snapshot. The new shared wire encoder converts nested enums to their names, preserving all other source fields and using identical serialization for snapshot hashing and transmission. The protocol check reproduces the old failure using Drift's actual serializer and validates the corrected payload.
+
+The settings page now shows saved pairing separately from upload progress and hides the pairing form after success. Retry sync does not consume another pairing code. LiveContainer users can close Miru before opening Cashew: the pairing code lives on the server for ten minutes and no concurrent app execution is needed. Update Cashew in the same existing container, keep the saved Keychain credential, and press 立即同步. Miru and the server do not need an update for this fix.
 
 Continue entering transactions in Cashew. In Miru, open 我的账本 → 连接 Cashew, then copy its HTTPS address and one-time pairing code into Cashew 设置 → 米汝同步. The code expires after ten minutes. With the private Miru deployment, Tailscale must be connected on the phone.
 

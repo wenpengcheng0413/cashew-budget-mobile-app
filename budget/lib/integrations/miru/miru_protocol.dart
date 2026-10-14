@@ -4,6 +4,13 @@ import 'package:crypto/crypto.dart';
 
 String miruHash(String value) => sha256.convert(utf8.encode(value)).toString();
 
+// Drift converts scalar enum columns but leaves enum lists in toJson() maps.
+// Wallet home-page settings and budget filters must also become JSON values.
+String miruJsonEncode(Object? value) => jsonEncode(value, toEncodable: (item) {
+  if (item is Enum) return item.name;
+  throw const FormatException('账本包含暂不支持的字段，上传尚未完成');
+});
+
 Uri miruEndpoint(String address) {
   final uri = Uri.parse(address.trim());
   if (uri.scheme != 'https' || uri.host.isEmpty || uri.userInfo.isNotEmpty ||

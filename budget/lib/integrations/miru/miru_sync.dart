@@ -20,6 +20,7 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   bool busy = false;
   String address = '';
   String _token = '';
+  bool get paired => _token.isNotEmpty;
   String message = '尚未连接米汝';
   String? lastSynced;
   int? count;
@@ -120,7 +121,7 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
     final request = http.Request(body == null ? 'GET' : 'POST', endpoint)..followRedirects = false;
     if (!pairing) request.headers['Authorization'] = 'Bearer $_token';
     if (body != null) {
-      final encoded = jsonEncode(body);
+      final encoded = miruJsonEncode(body);
       if (utf8.encode(encoded).length > 16 * 1024 * 1024) {
         throw const MiruSyncError('snapshot_too_large');
       }
@@ -235,7 +236,7 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
       _watchDatabase();
       final status = await _request('status');
       final data = await _capture();
-      final hash = miruHash(jsonEncode(data));
+      final hash = miruHash(miruJsonEncode(data));
       if (_pendingId != null && status['snapshot_id'] == _pendingId) {
         _lastHash = _pendingHash;
         _lastRevision = status['revision'] as int;
@@ -288,19 +289,20 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   static String errorMessage(Object error) {
+    if (error is JsonUnsupportedObjectError) return '已配对，但账本字段转换失败；请更新 Cashew 后点击立即同步，无需重新配对';
     if (error is FormatException) return error.message;
     if (error is MiruSyncError) {
       switch (error.code) {
         case 'reconciliation_required': return '账本恢复或数量明显减少，请到米汝账本页核对并采用';
         case 'sync_token_invalid': return '上传凭据已失效，请重新配对';
-        case 'pairing_invalid_or_expired': return '配对码已过期或已使用，请在米汝重新生成';
+        case 'pairing_invalid_or_expired': return '配对码无效、已过期或已使用。若显示已配对，请直接点立即同步；切换 App 不会使配对码失效';
         case 'snapshot_too_large': return '账本超过 16 MB，同步尚未完成，请联系维护者启用分块上传';
         case 'invalid_snapshot': return '账本格式未通过校验，云端保留上一版，请联系维护者';
         case 'revision_conflict': return '云端版本已变化，稍后重新对账';
         case 'local_database_unavailable': return '本地账本暂不可读，已暂停上传';
       }
     }
-    return '同步未完成；本地账单已保留，联网并打开 Cashew 后会重试';
+    return '同步未完成；本地账单和已保存的配对信息均保留。联网后点立即同步，无需重复输入配对码';
   }
 }
 
