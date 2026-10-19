@@ -13,9 +13,24 @@ import 'miru_protocol.dart';
 
 class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   MiruSync._();
+  @visibleForTesting
+  MiruSync.testing({required Future<Map<String, dynamic>> Function() capture,
+    required Future<Map<String, dynamic>> Function(String, Map<String, dynamic>?) request,
+    required Stream<void> changes, Duration timeout = const Duration(seconds: 12)}) {
+    _testCapture = capture;
+    _testRequest = request;
+    _testChanges = changes;
+    _localTimeout = timeout;
+    enabled = true;
+    _token = 'test';
+  }
+  Future<Map<String, dynamic>> Function()? _testCapture;
+  Future<Map<String, dynamic>> Function(String, Map<String, dynamic>?)? _testRequest;
+  Stream<void>? _testChanges;
+  Duration _localTimeout = const Duration(seconds: 12);
   static final instance = MiruSync._();
   static const _keychain = MethodChannel('cashew/miru-keychain');
-  bool get supported => !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
+  bool get supported => _testCapture != null || (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS);
   bool enabled = false;
   bool busy = false;
   String address = '';
@@ -24,7 +39,10 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   String message = '尚未连接米汝';
   String? lastSynced;
   int? count;
-  Timer? _timer, _debounce;
+  Timer? _timer, _debounce, _retry;
+  bool _requested = false;
+  bool _disposed = false;
+  String _stage = '';
   StreamSubscription<dynamic>? _changes;
   FinanceDatabase? _watchedDb;
   Future<void>? _initialization;
@@ -41,7 +59,7 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   Future<void> _initialize() async {
     if (!supported) return;
     try {
-      final stored = await _keychain.invokeMethod<String>('read');
+      final stored = _testCapture != null ? null : await _keychain.invokeMethod<String>('read').timeout(_localTimeout);
       if (stored != null) {
         final value = jsonDecode(stored) as Map;
         address = value['address'] as String;
@@ -60,10 +78,14 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
         await _save();
       }
     } catch (_) {
-      enabled = false;
-      message = '无法读取安全凭据，请重新连接';
+      message = '安全存储暂时不可用，正在自动重试';
+      _initialization = null;
+      _retry = Timer(const Duration(seconds: 5), () { if (!_disposed) initialize(); });
+      notifyListeners();
+      return;
     }
     WidgetsBinding.instance.addObserver(this);
+    _watchDatabase();
     // Keep retry triggers available even if reading Keychain failed on startup.
     _timer = Timer.periodic(const Duration(seconds: 30), (_) => schedule());
     schedule();
@@ -71,6 +93,10 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   void _watchDatabase() {
+    if (_testChanges != null) {
+      _changes ??= _testChanges!.listen((_) => schedule());
+      return;
+    }
     if (identical(_watchedDb, database)) return;
     _changes?.cancel();
     _watchedDb = database;
@@ -83,20 +109,46 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) schedule();
+    if (state == AppLifecycleState.resumed) {
+      _retryAfter = null;
+      schedule(immediate: true);
+    } else if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      // Flush the last committed edit before iOS suspends this app.
+      if (_requested) {
+        _debounce?.cancel();
+        unawaited(sync(allowBackground: true));
+      }
+    }
   }
 
-  void schedule() {
-    if (!enabled || !supported || _restoring) return;
+  void schedule({bool immediate = false}) {
+    if (!enabled || !supported || _restoring || _disposed) return;
+    _requested = true;
+    if (busy) return;
     _debounce?.cancel();
-    _debounce = Timer(const Duration(seconds: 3), () => sync());
+    _debounce = Timer(immediate ? Duration.zero : const Duration(milliseconds: 250), () => sync());
   }
 
-  Future<void> _save() => _keychain.invokeMethod<void>('write', jsonEncode({
+  Future<void> _save() async {
+    if (_testCapture != null) return;
+    await _keychain.invokeMethod<void>('write', jsonEncode({
     'address': address, 'token': _token, 'enabled': enabled,
     'restore_pending': _restorePending, 'pending_id': _pendingId,
     'pending_hash': _pendingHash, 'last_hash': _lastHash, 'last_revision': _lastRevision,
-  }));
+    })).timeout(_localTimeout);
+  }
+
+  void _setStage(String value) {
+    _stage = value;
+    message = '$value…';
+    notifyListeners();
+  }
+
+  Future<void> _backgroundLease(String method) async {
+    if (_testCapture != null) return;
+    try { await _keychain.invokeMethod<void>(method).timeout(const Duration(seconds: 2)); }
+    catch (_) { /* Optional lease; foreground sync still works. */ }
+  }
 
   // Called before replacing the native database file. Persist the guard across restarts.
   Future<void> pauseForRestore() async {
@@ -106,6 +158,7 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
     _restorePending = true;
     _debounce?.cancel();
     _timer?.cancel();
+    _retry?.cancel();
     await _syncDone?.future;
     _restorePending = true;
     _pendingId = null;
@@ -117,6 +170,7 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   Future<Map<String, dynamic>> _request(String path, {Map<String, dynamic>? body, bool pairing = false}) async {
+    if (_testRequest != null) return _testRequest!(path, body).timeout(_localTimeout);
     final endpoint = miruEndpoint(address).replace(path: '/api/finance/sync/$path');
     final request = http.Request(body == null ? 'GET' : 'POST', endpoint)..followRedirects = false;
     if (!pairing) request.headers['Authorization'] = 'Bearer $_token';
@@ -134,7 +188,7 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
       final response = await (() async {
         final streamed = await client.send(request);
         return http.Response.fromStream(streamed);
-      })().timeout(const Duration(seconds: 45));
+      })().timeout(Duration(seconds: body == null ? 12 : 25));
       final decoded = jsonDecode(utf8.decode(response.bodyBytes));
       if (response.statusCode != 200) {
         final detail = decoded is Map ? decoded['detail'] : null;
@@ -193,6 +247,7 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   Future<Map<String, dynamic>> _capture() async {
+    if (_testCapture != null) return _testCapture!();
     if (isDatabaseCorrupted) throw const MiruSyncError('local_database_unavailable');
     final db = database;
     return db.transaction(() async {
@@ -224,18 +279,28 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
     });
   }
 
-  Future<void> sync({bool force = false}) async {
-    if (!supported || !enabled || busy || _restoring) return;
-    if (WidgetsBinding.instance.lifecycleState != null && WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed) return;
-    if (!force && _retryAfter != null && DateTime.now().isBefore(_retryAfter!)) return;
+  Future<void> sync({bool force = false, bool allowBackground = false}) async {
+    if (!supported || !enabled || _restoring || _disposed) return;
+    if (busy) { _requested = true; return; }
+    if (!allowBackground && WidgetsBinding.instance.lifecycleState != null && WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed) return;
+    if (!force && _retryAfter != null && DateTime.now().isBefore(_retryAfter!)) {
+      _retry?.cancel();
+      _retry = Timer(_retryAfter!.difference(DateTime.now()), () => sync(force: true));
+      return;
+    }
+    _retry?.cancel();
+    _requested = false;
     busy = true;
     _syncDone = Completer<void>();
     message = '正在同步…';
     notifyListeners();
     try {
+      await _backgroundLease('beginSync');
       _watchDatabase();
+      _setStage('读取本地账本');
+      final data = await _capture().timeout(_localTimeout);
+      _setStage('连接米汝服务器');
       final status = await _request('status');
-      final data = await _capture();
       final hash = miruHash(miruJsonEncode(data));
       if (_pendingId != null && status['snapshot_id'] == _pendingId) {
         _lastHash = _pendingHash;
@@ -253,8 +318,10 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
         final id = uuid.v4();
         _pendingId = id;
         _pendingHash = hash;
+        _setStage('保存同步进度');
         await _save();
         if (_restoring) return;
+        _setStage('上传账本');
         final result = await _request('snapshot', body: {
           'protocol': 1, 'schema_version': schemaVersionGlobal, 'snapshot_id': id,
           'base_revision': status['revision'],
@@ -279,12 +346,17 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
     } catch (e) {
       _failures = (_failures + 1).clamp(1, 6);
       _retryAfter = DateTime.now().add(Duration(seconds: 5 * (1 << _failures)));
-      message = errorMessage(e);
+      message = e is TimeoutException ? '$_stage超时；账单已保存在本机，将自动重试' : errorMessage(e);
+      _requested = true;
+      _retry?.cancel();
+      _retry = Timer(Duration(seconds: 5 * (1 << _failures)), () => sync(force: true));
     } finally {
+      await _backgroundLease('endSync');
       busy = false;
       _syncDone?.complete();
       _syncDone = null;
       notifyListeners();
+      if (_requested && _retryAfter == null) schedule(immediate: true);
     }
   }
 
@@ -302,7 +374,16 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
         case 'local_database_unavailable': return '本地账本暂不可读，已暂停上传';
       }
     }
-    return '同步未完成；本地账单和已保存的配对信息均保留。联网后点立即同步，无需重复输入配对码';
+    return '同步暂未完成，正在自动重试；本地账单和配对信息已保留，无需手动同步';
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    WidgetsBinding.instance.removeObserver(this);
+    _timer?.cancel(); _debounce?.cancel(); _retry?.cancel();
+    _changes?.cancel();
+    super.dispose();
   }
 }
 

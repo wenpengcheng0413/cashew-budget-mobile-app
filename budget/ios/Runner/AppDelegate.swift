@@ -6,6 +6,14 @@ import Security
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
+  private var miruSyncTask: UIBackgroundTaskIdentifier = .invalid
+
+  private func endMiruSyncTask() {
+    if miruSyncTask != .invalid {
+      UIApplication.shared.endBackgroundTask(miruSyncTask)
+      miruSyncTask = .invalid
+    }
+  }
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -25,6 +33,20 @@ import Security
     if let controller = window?.rootViewController as? FlutterViewController {
       let channel = FlutterMethodChannel(name: "cashew/miru-keychain", binaryMessenger: controller.binaryMessenger)
       channel.setMethodCallHandler { call, result in
+        if call.method == "beginSync" {
+          if self.miruSyncTask == .invalid {
+            self.miruSyncTask = UIApplication.shared.beginBackgroundTask(withName: "Miru ledger sync") { [weak self] in
+              self?.endMiruSyncTask()
+            }
+          }
+          result(nil)
+          return
+        }
+        if call.method == "endSync" {
+          self.endMiruSyncTask()
+          result(nil)
+          return
+        }
         let query: [String: Any] = [
           kSecClass as String: kSecClassGenericPassword,
           kSecAttrService as String: (Bundle.main.bundleIdentifier ?? "cashew") + ".miru",

@@ -75,7 +75,7 @@ class _MiruSyncPageState extends State<MiruSyncPage> {
       TextButton.icon(onPressed: sync.enabled && !sync.busy ? _retrySync : null,
         icon: const Icon(Icons.sync), label: const Text('立即同步')),
       const SizedBox(height: 24),
-      const Text('无网也能继续记账。联网并打开 Cashew 后自动补同步；iOS 关闭 App 后不保证持续上传。配对信息只保存在本机安全存储，不进入账本导出。'),
+      const Text('记账后自动同步，无需点按钮。切换 App 时会尽快完成上传；离线记录在联网并打开 Cashew 后自动补齐。系统强制关闭 App 时，下次打开自动续传。配对信息只保存在本机安全存储，不进入账本导出。'),
     ])),
   );
 }
