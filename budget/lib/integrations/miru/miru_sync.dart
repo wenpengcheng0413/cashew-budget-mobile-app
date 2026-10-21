@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io' show gzip, SocketException, HandshakeException;
 
 import 'package:budget/database/tables.dart';
 import 'package:budget/struct/databaseGlobal.dart';
@@ -15,10 +16,13 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   MiruSync._();
   @visibleForTesting
   MiruSync.testing({required Future<Map<String, dynamic>> Function() capture,
-    required Future<Map<String, dynamic>> Function(String, Map<String, dynamic>?) request,
+    Future<Map<String, dynamic>> Function(String, Map<String, dynamic>?)? request,
+    http.Client Function()? clientFactory,
     required Stream<void> changes, Duration timeout = const Duration(seconds: 12)}) {
     _testCapture = capture;
     _testRequest = request;
+    _clientFactory = clientFactory ?? http.Client.new;
+    address = 'https://miru.test';
     _testChanges = changes;
     _localTimeout = timeout;
     enabled = true;
@@ -26,6 +30,8 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   }
   Future<Map<String, dynamic>> Function()? _testCapture;
   Future<Map<String, dynamic>> Function(String, Map<String, dynamic>?)? _testRequest;
+  http.Client Function() _clientFactory = http.Client.new;
+  bool _acceptsGzip = false;
   Stream<void>? _testChanges;
   Duration _localTimeout = const Duration(seconds: 12);
   static final instance = MiruSync._();
@@ -181,18 +187,29 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
       }
       request.headers['Content-Type'] = 'application/json';
       request.headers['X-Content-SHA256'] = miruHash(encoded);
-      request.bodyBytes = utf8.encode(encoded);
+      final bytes = utf8.encode(encoded);
+      if (path == 'snapshot' && _acceptsGzip) {
+        request.headers['Content-Encoding'] = 'gzip';
+        request.bodyBytes = gzip.encode(bytes);
+      } else {
+        request.bodyBytes = bytes;
+      }
     }
-    final client = http.Client();
+    final client = _clientFactory();
     try {
       final response = await (() async {
         final streamed = await client.send(request);
         return http.Response.fromStream(streamed);
-      })().timeout(Duration(seconds: body == null ? 12 : 25));
-      final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+      })().timeout(Duration(seconds: path == 'snapshot' ? 90 : 12));
+      dynamic decoded;
+      try { decoded = jsonDecode(utf8.decode(response.bodyBytes)); }
+      on FormatException {
+        throw MiruSyncError('http_${response.statusCode}');
+      }
       if (response.statusCode != 200) {
         final detail = decoded is Map ? decoded['detail'] : null;
-        throw MiruSyncError(detail is Map ? detail['code'].toString() : 'connection_failed');
+        throw MiruSyncError(detail is Map && detail['code'] is String
+            ? detail['code'] as String : 'http_${response.statusCode}');
       }
       return Map<String, dynamic>.from(decoded as Map);
     } finally {
@@ -301,6 +318,7 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
       final data = await _capture().timeout(_localTimeout);
       _setStage('连接米汝服务器');
       final status = await _request('status');
+      _acceptsGzip = (status['snapshot_encodings'] as List?)?.contains('gzip') == true;
       final hash = miruHash(miruJsonEncode(data));
       if (_pendingId != null && status['snapshot_id'] == _pendingId) {
         _lastHash = _pendingHash;
@@ -361,6 +379,8 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   static String errorMessage(Object error) {
+    if (error is SocketException || error is http.ClientException) return '网络连接中断，请确认 Tailscale 已连接；账单保留在本机，将自动重试';
+    if (error is HandshakeException) return '服务器安全连接失败；账单保留在本机，将自动重试';
     if (error is JsonUnsupportedObjectError) return '已配对，但账本字段转换失败；请更新 Cashew 后点击立即同步，无需重新配对';
     if (error is FormatException) return error.message;
     if (error is MiruSyncError) {
@@ -372,6 +392,11 @@ class MiruSync extends ChangeNotifier with WidgetsBindingObserver {
         case 'invalid_snapshot': return '账本格式未通过校验，云端保留上一版，请联系维护者';
         case 'revision_conflict': return '云端版本已变化，稍后重新对账';
         case 'local_database_unavailable': return '本地账本暂不可读，已暂停上传';
+        case 'checksum_mismatch': return '上传完整性校验失败，云端保留上一版，将自动重试';
+        case 'invalid_compression': return '上传数据不完整，云端保留上一版，将自动重试';
+      }
+      if (RegExp(r'^http_\d{3}$').hasMatch(error.code)) {
+        return '服务器返回 HTTP ${error.code.substring(5)}；账单保留在本机，将自动重试';
       }
     }
     return '同步暂未完成，正在自动重试；本地账单和配对信息已保留，无需手动同步';
